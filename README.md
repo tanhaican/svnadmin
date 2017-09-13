@@ -34,5 +34,9 @@ frok from `https://git.oschina.net/hpboys/svnadmin.git`
 1. SVN认证账户和登录账户默认一致；
 
 
-> 三、使用多库启动模式：
-TODO
+> 三、SilkSvn启动模式：<br>
+在cmd里面输入以下命令安装服务：<br>
+ sc stop ==silksvn== <br>
+ sc delete ==silksvn==  <br>
+ sc create ==silksvn== binPath= "\\"C:/Program Files/SlikSvn/bin/svnserve.exe\\" --service -r D:\\svn\\repository" DisplayName= "Silk SVN" depend= tcpip start= auto <br>
+最后在windows服务里面启动silksvn服务
