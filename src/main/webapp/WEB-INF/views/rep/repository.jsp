@@ -29,8 +29,8 @@
                                             <li id="svnroot" class="closed lastclosed" treeId="rep"
                                                 param="pj=${pj.pj}&path=${pj.path}">
                                                 <div class="hit closed-hit lastclosed-hit" onclick='$att(this);'></div>
-                                                <span class="folder" onclick='$att(this);'>
-                                                <a id="rootlink" href='javascript:void(0);' onclick='$atc(this)'>${pj.url}</a>
+                                                <span class="folder" onclick='$atc(this, false);'>
+                                                	<a id="rootlink" href='javascript:void(0);' onclick='$atc(this, true)'>${pj.url}</a>
                                                 </span>
                                             </li>
                                         </ul>
@@ -50,7 +50,7 @@
                                                     <th class="lbl">资源</th>
                                                     <td colspan="3">
                                                         <input type="text" id="selectedRes" name="res" value="[${pj.pj}:/]" style="width: 416px;;" required/><span style="color:red;">*</span>
-                                                        <select onchange="this.form.res.value=this.value">
+                                                        <select onchange="this.form.res.value=this.value" style="display: none;">
                                                             <option value="">选择资源</option>
                                                         <c:forEach items="${pjreslist}" var="item">
                                                             <option value="${item}">${item}</option>
@@ -112,7 +112,7 @@
                                                 <tr>
                                                     <th class="lbl">权限</th>
                                                     <td colspan="3">
-                                                        <select name="rw" required>
+                                                        <select name="rw">
                                                             <option value="">没有权限</option>
                                                             <option value="r">可读</option>
                                                             <option value="rw">可读可写</option>

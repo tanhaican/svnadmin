@@ -64,7 +64,7 @@ public class RepController extends BaseController {
     public String repository(HttpSession session,
                              @RequestParam("pj")String _pj,ModelMap map) {
         Pj pj = pjService.get(_pj);
-        map.put("pj",pj);
+        map.put("pj", pj);
         map.put("usrList", usrService.list());
         map.put("pjgrlist", pjGrService.list(_pj));
         map.put("pjreslist", pjAuthService.getResList(_pj));

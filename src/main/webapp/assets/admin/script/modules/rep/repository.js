@@ -91,6 +91,7 @@ define(function(require, exports, module){
 					var paramTxt = o.getAttribute("param");
 					var paramArr = _scope.methods.getParams(paramTxt);
 					var res = _scope.methods.getRes(paramArr);
+					res = decodeURIComponent(res);
 					selectedRes.val(res);
 					_scope.vars.path = paramArr.path;
 					pageBean.reload(_scope.methods.getListUrl());
@@ -119,7 +120,7 @@ define(function(require, exports, module){
 				var form = util.serializeObject($('#submitForm'));
 				form.pj = pj;
 				var load_index = util.loading();
-				$.post('repPathAuthAddHandler',form,function(data){
+				$.post('repPathAuthAddHandler', form, function(data){
 					util.showMsg(data.info);
 					if(data.status){
 						layer.closeAll();

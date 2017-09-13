@@ -81,17 +81,17 @@ public abstract class AbstractTreeNodeService implements TreeNodeService {
 			
 			// span
 			if (this.isLeaf(tree,treeNode)) {
-				html.append("<span class='file'>");
+				html.append("<span class='file'onclick='$atc(this, false);'>");
 			}else{
 				if(i == nodes.size() -1){//last folder
 					html.append("<div class='hit closed-hit lastclosed-hit' onclick='$att(this);'></div>");
 				}else{
 					html.append("<div class='hit closed-hit' onclick='$att(this);'></div>");
 				}
-				html.append("<span class='folder' onclick='$att(this);'>");
+				html.append("<span class='folder' onclick='$atc(this, false);'>");
 			}
 			// a
-			html.append("<a href='javascript:void(0);' onclick='$atc(this)'>");
+			html.append("<a href='javascript:void(0);' onclick='$atc(this, true)'>");
 			html.append(StringEscapeUtils.escapeHtml(treeNode.getText()));
 			html.append("</a>");
 			html.append("</span>");

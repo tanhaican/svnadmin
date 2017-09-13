@@ -108,9 +108,13 @@ var AjaxTreeView = {
         //console.log(r);
         return r;
     },
-    click: function (a) {
+    click: function (a, isLink) {
         if (typeof(AjaxTreeView.config.onclick) == "function") {//call onclick
-            return AjaxTreeView.config.onclick(a.parentNode.parentNode, a);
+        	if(isLink) {
+        		return AjaxTreeView.config.onclick(a.parentNode.parentNode, a);
+        	} else {
+        		return AjaxTreeView.config.onclick(a.parentNode, a);
+        	}
         }
     },
 
