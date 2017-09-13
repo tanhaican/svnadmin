@@ -36,8 +36,9 @@ frok from `https://git.oschina.net/hpboys/svnadmin.git`
 
 > 三、SilkSvn启动模式：<br>
 在cmd里面输入以下命令安装服务：<br>
- sc stop ==silksvn== <br>
- sc delete ==silksvn==  <br>
- sc create ==silksvn== binPath= "\\"C:/Program Files/SlikSvn/bin/svnserve.exe\\" --service -r D:\\svn\\repository" DisplayName= "Silk SVN" depend= tcpip start= auto <br>
+ sc stop `silksvn` <br>
+ sc delete `silksvn`  <br>
+ sc create `silksvn` binPath= "\\"C:/Program Files/SlikSvn/bin/svnserve.exe\\" --service -r D:\\svn\\repository" DisplayName= "Silk SVN" depend= tcpip start= auto <br>
+ 上面的路径分别是SilkSvn的安装路径以及SVN仓库的根目录（该目录必须已经存在，否则服务启动失败）。
 最后在windows服务里面启动silksvn服务
 `PS：silksvn 默认的端口是：3690，注意开启防火墙`
