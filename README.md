@@ -40,3 +40,4 @@ frok from `https://git.oschina.net/hpboys/svnadmin.git`
  sc delete ==silksvn==  <br>
  sc create ==silksvn== binPath= "\\"C:/Program Files/SlikSvn/bin/svnserve.exe\\" --service -r D:\\svn\\repository" DisplayName= "Silk SVN" depend= tcpip start= auto <br>
 最后在windows服务里面启动silksvn服务
+`PS：silksvn 默认的端口是：3690，注意开启防火墙`
