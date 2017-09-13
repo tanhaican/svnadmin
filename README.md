@@ -1,4 +1,5 @@
-# SvnAdmin frok from `https://git.oschina.net/hpboys/svnadmin.git`
+# SvnAdmin 
+frok from `https://git.oschina.net/hpboys/svnadmin.git`
 
 ## 说明：本系统用于配合silksvn服务器使用，不支持Visual SvnServer。
 
@@ -24,11 +25,11 @@
 
 
 > 二、使用部署包直接部署步骤：
-1. 下载最新部署包（[点此下载]()）；TODO
+1. 下载最新部署包（[点此下载](https://github.com/tanhaican/svnadmin/releases/tag/0.1)）；
 1. 找到文件 sql\svnadmin_init.sql 进行执行初始化；
-1. 配置数据库连接信息，配置文件位置：WEB-INF/classes/jdbc.properties
+1. 配置数据库连接信息，配置文件位置：WEB-INF/classes/jdbc.properties，修改数据库密码
 1. 部署到tomcat等Web容器中即可；环境推荐JDK1.8 / Tomcat8
-1. 默认root账户：root/root
+1. 系统默认root账户：root/root
 1. 删除所有账户，进行登录，则可以重新初始化管理员账号；
 1. SVN认证账户和登录账户默认一致；
 
