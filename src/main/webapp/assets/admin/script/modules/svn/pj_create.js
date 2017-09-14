@@ -16,16 +16,24 @@ define(function(require, exports, module){
         }
     }
 	
+	function validateSvnName(str) {
+        if(/^[\w|\d]+$/.test(str)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+	
 	function inputName(val) {
-		if(isChinese(val)) {
-			util.showMsg('项目名称不能是中文名', 4);
-			$('#projectName').addClass('error');
+		if(!validateSvnName(val)) {
+			util.showMsg('请输入英文、数字或下划线', 4);
+			$('#projectSvnName').addClass('error');
 			return;
 		} else {
-			$('#projectName').removeClass('error');
+			$('#projectSvnName').removeClass('error');
 		}
 		
-		var url = 'svn://192.168.105.100/' + val;
+		var url = 'svn://' + $('#serverName').val() + '/' + val;
 		$('#projectSvnUrl').val(url);
 		$('#projectSvnUrlShow').val(url);
 		$('#projectSvnPath').val('D:/svn/repository/' + val);

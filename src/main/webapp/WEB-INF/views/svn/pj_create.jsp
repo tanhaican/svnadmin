@@ -1,5 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+String serverName = request.getServerName();
+String svnBasePath = "svn://" + serverName + "/";
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +12,19 @@
     <meta name="renderer" content="webkit">
     <title>创建项目 - ${applicationScope.sysName}</title>
     <jsp:include page="../common/init_style.jsp"/>
+    <style>
+    .input-group-addon {
+	    padding: 6px 12px;
+	    font-size: 14px;
+	    font-weight: 400;
+	    line-height: 1;
+	    color: #555;
+	    text-align: center;
+	    background-color: #eee;
+	    border: 1px solid #ccc;
+	    border-radius: 4px;
+    }
+    </style>
 </head>
 <body class="gray-bg top-navigation">
 <div id="wrapper">
@@ -24,12 +41,12 @@
                             <!-- 查询表单 -->
                             <form class="form-horizontal m-t" id="submitForm" action="#" onsubmit="return submitForm();" method="post">
                                 <div class="col-md-12 clear-float">
-
+									<input type="hidden" id="serverName" value="<%=serverName %>">
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">项目名称：</label>
                                         <div class="col-sm-8">
-                                            <input type="text" placeholder="请输入项目名称" name="pj" id="projectName" class="form-control" required oninput="inputName(this.value)" onpropertychange="inputName(this.value)">
-                                            <span class="help-block m-b-none"><i class="fa fa-info-circle">&nbsp;</i>项目名称请使用<strong style="color:red">字母</strong>，用作资源目录名</span>
+                                            <input type="text" placeholder="请输入项目名称" name="pj" id="projectName" class="form-control" required >
+                                            <span class="help-block m-b-none"><i class="fa fa-info-circle">&nbsp;</i>请填写项目名称，用作资源目录名，支持中文</span>
                                         </div>
                                     </div>
 
@@ -50,8 +67,12 @@
                                         <label class="col-md-3 control-label">项目 SVN地址 ：</label>
                                         <div class="col-sm-8">
                                             <input type="hidden" name="url" id="projectSvnUrl">
-                                            <input type="text" placeholder="项目 SVN地址" name="svnurl" class="form-control" id="projectSvnUrlShow" readonly>
-                                            <span class="help-block m-b-none"><i class="fa fa-info-circle">&nbsp;</i>项目 Url 例如：svn://192.168.105.100/项目一</span>
+                                             <div class="input-group">
+										      <div class="input-group-addon"><%=svnBasePath %></div>
+										      <input type="text" class="form-control" id="projectSvnName" placeholder="project name" oninput="inputName(this.value)" onpropertychange="inputName(this.value)">
+										    </div>
+                                            <input type="hidden" name="svnurl" class="form-control" id="projectSvnUrlShow" readonly>
+                                            <span class="help-block m-b-none"><i class="fa fa-info-circle">&nbsp;</i>请输入项目SVN名称，支持英文、数字以及下划线</span>
                                         </div>
                                     </div>
 
