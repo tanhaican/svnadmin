@@ -25,7 +25,7 @@ frok from `https://git.oschina.net/hpboys/svnadmin.git`
 
 
 > 二、使用部署包直接部署步骤：
-1. 下载最新部署包（[点此下载](https://github.com/tanhaican/svnadmin/releases/tag/0.1)）；
+1. 下载最新部署包（[点此下载](https://github.com/tanhaican/svnadmin/releases)）；
 1. 找到文件 sql\svnadmin_init.sql 进行执行初始化；
 1. 配置数据库连接信息，配置文件位置：WEB-INF/classes/jdbc.properties，修改数据库密码
 1. 部署到tomcat等Web容器中即可；环境推荐JDK1.8 / Tomcat8
