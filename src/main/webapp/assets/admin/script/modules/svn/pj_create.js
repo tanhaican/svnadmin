@@ -44,6 +44,10 @@ define(function(require, exports, module){
 			util.showMsg('请先修正红色提示框内的内容再提交', 4);
 			return false;
 		}
+		var $pjName = $('#projectName'),
+			pjName = $pjName.val();
+		pjName = pjName && pjName.trim();
+		$pjName.val(pjName);
 		var form = util.serializeObject($('#submitForm'));
 		var load_index = util.loading();
 		$.post('pjCreateHandler', form, function(data){
