@@ -37,12 +37,10 @@
 </head>
 
 <body>
-<div class="e404"><img src="http://7xpwl1.com1.z0.glb.clouddn.com/%40%2Fcommon%2Fhfb_bank_404.png">
+<div class="e404"><img src="assets/admin/image/hfb_bank_404.png">
   <h1>404 . Not Found</h1>
   <p>沒有找到你要的内容！</p>
   <br>
-  <p class="saoma">扫码收益，先人一步！</p>
-  <p><img src="http://7xpwl1.com1.z0.glb.clouddn.com/%40%2Fcommon%2Fbill2.png" width="150"/></p>
 </div>
 </body>
 

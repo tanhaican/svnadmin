@@ -16,8 +16,8 @@ import org.svnadmin.common.entity.PageBean;
 import org.svnadmin.common.web.BaseController;
 import org.svnadmin.entity.Pj;
 import org.svnadmin.entity.Usr;
+import org.svnadmin.service.CommonService;
 import org.svnadmin.service.PjService;
-import org.svnadmin.service.UsrService;
 import org.svnadmin.util.SessionUtils;
 
 /**
@@ -31,7 +31,7 @@ import org.svnadmin.util.SessionUtils;
 public class ProjectController extends BaseController {
 
     @Autowired
-    private UsrService usrService;
+    private CommonService commonService;
     @Autowired
     private PjService pjService;
 
@@ -78,6 +78,9 @@ public class ProjectController extends BaseController {
     @AdminAuthPassport
     @RequestMapping(value = "pjCreate", method = RequestMethod.GET)
     public String pjCreate(HttpSession session, ModelMap map) {
+    	String basePath = commonService.getConfig("DB2_SVNADMIN_SVN_REPOS");
+    	map.put("SVN_BASE_PATH", basePath);
+    	
         return "svn/pj_create";
     }
 

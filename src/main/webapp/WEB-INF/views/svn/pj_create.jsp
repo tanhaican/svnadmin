@@ -62,6 +62,7 @@ String svnBasePath = "svn://" + serverName + "/";
                                     </div>
 
 									<input type="hidden" name="path" id="projectSvnPath">
+									<input type="hidden" name="svnRepoPath" id="svnRepoPath" value="${SVN_BASE_PATH }">
 
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">项目 SVN地址 ：</label>

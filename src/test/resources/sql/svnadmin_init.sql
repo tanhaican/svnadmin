@@ -177,6 +177,29 @@ CREATE TABLE `pj_gr_usr` (
 #
 
 
+#
+# Source for table "config"
+#
+
+DROP TABLE IF EXISTS `config`;
+
+CREATE TABLE `config` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `config` varchar(50) DEFAULT NULL,
+  `code` varchar(50) DEFAULT NULL,
+  `value` varchar(50) DEFAULT NULL,
+  `is_vaild` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='项目用配置信息';
+
+/*Data for the table `config` */
+
+insert  into `config`(`id`,`config`,`code`,`value`,`is_vaild`) values (1,'DB2_SVNADMIN_SVN_REPOS','BASE_PATH','/var/svn/svnrepos/',1);
+
+#
+# Data for table "config"
+#
+
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

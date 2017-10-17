@@ -96,16 +96,13 @@
 </head>
 
 <body>
-<div class="e404"><img src="http://7xpwl1.com1.z0.glb.clouddn.com/%40%2Fcommon%2Fhfb_bank_404.png">
+<div class="e404"><img src="assets/admin/image/hfb_bank_404.png">
 
     <h1>500，server not explain your request! </h1>
 
     <p>服务器暂时无法解释您的请求</p>
     <br>
 
-    <p class="saoma"> + 扫码关注话费宝 +</p>
-
-    <p><img src="http://7xpwl1.com1.z0.glb.clouddn.com/%40%2Fcommon%2Fbill2.png" width="150"/></p>
 </div>
 </body>
 </html>

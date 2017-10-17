@@ -36,7 +36,8 @@ define(function(require, exports, module){
 		var url = 'svn://' + $('#serverName').val() + '/' + val;
 		$('#projectSvnUrl').val(url);
 		$('#projectSvnUrlShow').val(url);
-		$('#projectSvnPath').val('D:/svn/repository/' + val);
+		var svnRepoPath = $('#svnRepoPath').val();
+		$('#projectSvnPath').val(svnRepoPath + val);
 	}
 
 	function submitForm(){
