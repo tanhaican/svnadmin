@@ -29,7 +29,9 @@ String svnBasePath = "svn://" + serverName + "/";
 <body class="gray-bg top-navigation">
 <div id="wrapper">
     <div id="page-wrapper" class="gray-bg">
-        <jsp:include page="../common/header.jsp"/>
+        <jsp:include page="../common/header.jsp" flush="true">
+	    	<jsp:param name="navName" value="CREATE_PROJ" />
+	    </jsp:include>
         <div class="wrapper wrapper-content">
             <div class="container">
                 <div class="row list-margin">

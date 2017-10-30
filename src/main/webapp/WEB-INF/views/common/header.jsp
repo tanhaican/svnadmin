@@ -1,5 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+String navName = request.getParameter("navName");
+%>
 <div class="row border-bottom white-bg">
 	<nav class="navbar navbar-static-top container" role="navigation">
 		<div class="navbar-header">
@@ -12,22 +15,22 @@
 			<ul class="nav navbar-nav">
 				<c:if test="${'sadmin' == adminUser.role || 'admin' == adminUser.role}" var="isAdmin">
 				<%-- 管理员才有的权限 --%>
-				<li class="active">
+				<li <%if(null == navName || "PROJ_MANAGE".equals(navName)) {%>class="active"<%}%>>
 					<a aria-expanded="false" role="button" href="pjList"> 项目管理</a>
 				</li>
 
-				<li>
+				<li <%if("CREATE_PROJ".equals(navName)) {%>class="active"<%}%>>
 					<a aria-expanded="false" role="button" href="pjCreate"> 创建项目</a>
 				</li>
-				<li>
+				<li <%if("USER_MANAGE".equals(navName)) {%>class="active"<%}%>>
 					<a aria-expanded="false" role="button" href="usrList"> 用户管理</a>
 				</li>
 				</c:if>
-				<li <c:if test="${!isAdmin}">class="active"</c:if> >
+				<li <%if("MY_AUTH".equals(navName)) {%>class="active"<%}%>>
 					<a aria-expanded="false" role="button" href="usrRightListView"> 我的权限</a>
 				</li>
 
-				<li>
+				<li <%if("UPDATE_PWD".equals(navName)) {%>class="active"<%}%>>
 					<a aria-expanded="false" role="button" href="updatePswd"> 修改密码</a>
 				</li>
 			</ul>

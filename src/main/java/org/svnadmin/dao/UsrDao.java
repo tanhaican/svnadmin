@@ -33,7 +33,7 @@ public class UsrDao extends Dao {
 	 * @return 用户
 	 */
 	public Usr get(String usr) {
-		String sql = "select usr,name,psw,role from usr where usr=?";
+		String sql = "select usr,name,psw,role,created_by from usr where usr=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -60,7 +60,7 @@ public class UsrDao extends Dao {
 	 * @return 所有用户列表
 	 */
 	public List<Usr> getList() {
-		String sql = "select usr,name,psw,role from usr order by usr";
+		String sql = "select usr,name,psw,role,created_by from usr order by usr";
 		List<Usr> list = new ArrayList<Usr>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -92,7 +92,7 @@ public class UsrDao extends Dao {
 	 * @return 项目组未选的用户(不包括*)
 	 */
 	public List<Usr> listUnSelected(int pjId, String gr) {
-		String sql = "select usr,name,psw,role from usr a where a.usr <> '*' "
+		String sql = "select usr,name,psw,role,created_by from usr a where a.usr <> '*' "
 				+ " and not exists (select usr from pj_gr_usr b where a.usr = b.usr and b.pj_id=? and b.gr=?) order by a.usr";
 		List<Usr> list = new ArrayList<Usr>();
 		Connection conn = null;
@@ -163,7 +163,7 @@ public class UsrDao extends Dao {
 	 * @return 所有相同svn root的项目的用户列表(不包括*)
 	 */
 	public List<Usr> getListByRootPath(String rootPath) {
-		String sql = "select p.usr,p.name,p.role,CASE WHEN pu.psw IS NOT NULL THEN pu.psw ELSE p.psw END psw from ("
+		String sql = "select p.usr,p.name,p.role,created_by,CASE WHEN pu.psw IS NOT NULL THEN pu.psw ELSE p.psw END psw from ("
 				+ " select a.usr,a.role,a.psw,a.name from usr a "
 				+ " where "
 				+ " exists (select d.usr from pj_gr_usr d where d.usr=a.usr and d.pj_id in (select distinct id from pj where type=? and path like ?)) "
@@ -213,6 +213,7 @@ public class UsrDao extends Dao {
 		result.setName(rs.getString("name"));
 		result.setPsw(rs.getString("psw"));
 		result.setRole(rs.getString("role"));
+		result.setCreatedBy(rs.getString("created_by"));
 		return result;
 	}
 
@@ -278,7 +279,7 @@ public class UsrDao extends Dao {
 	 * @return 更新数量
 	 */
 	public int insert(Usr usr) {
-		String sql = "insert into usr (usr,psw,name,role) values (?,?,?,?)";
+		String sql = "insert into usr (usr,psw,name,role,created_by) values (?,?,?,?,?)";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -289,6 +290,7 @@ public class UsrDao extends Dao {
 			pstmt.setString(index++, usr.getPsw());
 			pstmt.setString(index++, usr.getName());
 			pstmt.setString(index++, usr.getRole());
+			pstmt.setString(index++, usr.getCreatedBy());
 
 			return pstmt.executeUpdate();
 		} catch (SQLException e) {

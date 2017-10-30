@@ -1,5 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="org.svnadmin.constant.SessionConstant"%>
+<%
+String userName = (String) session.getAttribute(SessionConstant.USER_NAME_SESSION_KEY);
+String roleName = (String) session.getAttribute(SessionConstant.USER_ROLE_SESSION_KEY);
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +16,9 @@
 </head>
 <body class="gray-bg top-navigation">
 <div id="page-wrapper" class="gray-bg">
-    <jsp:include page="../common/header.jsp"/>
+    <jsp:include page="../common/header.jsp" flush="true">
+    	<jsp:param name="navName" value="USER_MANAGE" />
+    </jsp:include>
     <div class="wrapper wrapper-content">
         <div class="container">
             <div class="row list-margin">
@@ -53,7 +60,16 @@
                                             <td>{{item.psw}}</td>
                                             <td>{{item.role}}</td>
                                             <td><button type="button" class="btn btn-primary btn-xs btn-watch" data-id="{{item.usr}}">查看权限</button></td>
-                                            <td><button type="button" class="btn btn-warning btn-xs btn-remove" data-id="{{item.usr}}">删除</button></td>
+											<td>
+                                            <c:if test="${roleName == 'sadmin'}">
+                                            	<button type="button" class="btn btn-warning btn-xs btn-remove" data-id="{{item.usr}}">删除</button>
+                                            </c:if>
+                                            <c:if test="${roleName != 'sadmin'}">
+												{{if item.createdBy == '${userName}'}}
+												<button type="button" class="btn btn-warning btn-xs btn-remove" data-id="{{item.usr}}">删除</button>
+												{{/if}}
+                                            </c:if>
+											</td>
                                         </tr>
                                         {{/each}}
                                         {{/if}}
@@ -97,7 +113,9 @@
             <div class="col-sm-8">
                 <select name="role" class="form-control">
                     <option value="">选择角色</option>
-                    <option value="admin">admin</option>
+                    <option value="sadmin">超级管理员</option>
+                    <option value="admin">普通管理员</option>
+                    <option value="">普通用户</option>
                 </select>
             </div>
         </div>

@@ -49,4 +49,15 @@ public class SessionUtils {
         UsrService usrService = SpringUtils.getBean(UsrService.BEAN_NAME);
         return usrService.hasAdminRight(getLogedUser(session));
     }
+    
+    /**
+     * @param session 请求
+     * @return 当前登录的用户是否有管理员角色
+     * @see org.svnadmin.constant.Constants#USR_ROLE_ADMIN
+     * @see Usr#getRole()
+     */
+    public static boolean hasSuperAdminRight(HttpSession session) {
+        UsrService usrService = SpringUtils.getBean(UsrService.BEAN_NAME);
+        return usrService.hasSuperAdminRight(getLogedUser(session));
+    }
 }

@@ -212,7 +212,8 @@ public class UsrService {
 			Usr entity = new Usr();
 			entity.setUsr(usr);
 			entity.setPsw(EncryptUtil.encrypt(psw));
-			entity.setRole(Constants.USR_ROLE_ADMIN);
+			entity.setRole(Constants.USR_ROLE_SUPER_ADMIN);
+			entity.setCreatedBy(usr);
 			this.usrDao.insert(entity);
 			// *
 			Usr all = new Usr();
@@ -247,7 +248,19 @@ public class UsrService {
 	 * @return 有管理员权限返回true,否则返回false
 	 */
 	public boolean hasAdminRight(Usr usr){
-		if (Constants.USR_ROLE_ADMIN.equals(usr.getRole())) {
+		if (Constants.USR_ROLE_SUPER_ADMIN.equals(usr.getRole()) 
+				|| Constants.USR_ROLE_ADMIN.equals(usr.getRole())) {
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * 是否有管理员的权限
+	 * @param usr 用户
+	 * @return 有管理员权限返回true,否则返回false
+	 */
+	public boolean hasSuperAdminRight(Usr usr){
+		if (Constants.USR_ROLE_SUPER_ADMIN.equals(usr.getRole())) {
 			return true;
 		}
 		return false;

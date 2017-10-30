@@ -30,6 +30,10 @@ public class Usr implements Serializable {
 	 * 角色
 	 */
 	private String role;
+	/**
+	 * 创建者
+	 */
+	private String createdBy;
 
 	/**
 	 * @return 用户ID
@@ -89,6 +93,14 @@ public class Usr implements Serializable {
 	 */
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 
 }

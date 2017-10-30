@@ -61,6 +61,8 @@ public class LoginController extends BaseController{
             return pushMsg(ex.getMessage(), false);
         }
         request.getSession().setAttribute(SessionConstant.USER_SESSION_KEY, loginUser);
+        request.getSession().setAttribute(SessionConstant.USER_NAME_SESSION_KEY, usr);
+        request.getSession().setAttribute(SessionConstant.USER_ROLE_SESSION_KEY, loginUser.getRole());
         return pushMsg("认证通过", true , "url" , "console");
     }
 

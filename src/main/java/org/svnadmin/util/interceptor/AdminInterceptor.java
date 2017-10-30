@@ -50,6 +50,7 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
         AdminAuthPassport adminAuth = auth.getMethodAnnotation(AdminAuthPassport.class);
         if(null != adminAuth){
             if(!SessionUtils.hasAdminRight(session)){
+            	logger.info("无权限访问");
                 //无权限页面
                 request.getRequestDispatcher("/WEB-INF/views/common/not_auth.jsp").forward(request,response);
                 return false;

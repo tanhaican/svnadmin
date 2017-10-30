@@ -46,8 +46,13 @@ public class Constants {
 			"tester" };
 
 	/**
+	 * 超级管理员角色代码
+	 */
+	public static final String USR_ROLE_SUPER_ADMIN = "sadmin";
+	
+	/**
 	 * 管理员角色代码
 	 */
-	public static final String USR_ROLE_ADMIN = "sadmin";
+	public static final String USR_ROLE_ADMIN = "admin";
 
 }

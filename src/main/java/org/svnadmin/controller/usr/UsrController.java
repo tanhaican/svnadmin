@@ -21,7 +21,6 @@ import org.svnadmin.entity.Pj;
 import org.svnadmin.entity.PjAuth;
 import org.svnadmin.entity.PjUsr;
 import org.svnadmin.entity.Usr;
-import org.svnadmin.service.PjService;
 import org.svnadmin.service.PjUsrService;
 import org.svnadmin.service.UsrService;
 import org.svnadmin.util.EncryptUtil;
@@ -75,14 +74,16 @@ public class UsrController extends BaseController {
     @AdminAuthPassport
     @RequestMapping(value = "usrCreateHandler", method = RequestMethod.POST)
     @ResponseBody
-    public Object usrCreateHandler(HttpSession session,Usr entity) {
+    public Object usrCreateHandler(HttpSession session, Usr entity) {
         try {
+        	Usr loginUsr = SessionUtils.getLogedUser(session);
             entity.setPsw(EncryptUtil.encrypt(entity.getPsw()));
+            entity.setCreatedBy(loginUsr.getUsr());
             usrService.save(entity);
             return pushMsg("创建用户成功", true , "url" , "usrList");
         }catch (Exception e){
-            logger.error("创建用户提交失败",e);
-            return pushMsg("创建用户失败，"+e.getMessage(), true);
+            logger.error("创建用户提交失败", e);
+            return pushMsg("创建用户失败，" + e.getMessage(), true);
         }
     }
 

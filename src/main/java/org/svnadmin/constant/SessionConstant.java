@@ -14,6 +14,10 @@ public class SessionConstant {
 	 */
 	public static final String USER_SESSION_KEY = "adminUser";
 	
+	public static final String USER_NAME_SESSION_KEY = "USER_NAME";
+	
+	public static final String USER_ROLE_SESSION_KEY = "USER_ROLE";
+	
 	/**
 	 * 商户主帐号ID的session键名.
 	 */
