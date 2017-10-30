@@ -10,7 +10,7 @@
 		</div>
 		<div class="navbar-collapse collapse" id="navbar">
 			<ul class="nav navbar-nav">
-				<c:if test="${'admin' == adminUser.role}" var="isAdmin">
+				<c:if test="${'sadmin' == adminUser.role || 'admin' == adminUser.role}" var="isAdmin">
 				<%-- 管理员才有的权限 --%>
 				<li class="active">
 					<a aria-expanded="false" role="button" href="pjList"> 项目管理</a>

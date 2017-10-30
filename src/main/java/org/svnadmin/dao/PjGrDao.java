@@ -30,8 +30,8 @@ public class PjGrDao extends Dao {
 	 *            组
 	 * @return 项目组
 	 */
-	public PjGr get(String pj, String gr) {
-		String sql = "select pj,gr,des from pj_gr where pj = ? and gr=?";
+	public PjGr get(int pjId, String gr) {
+		String sql = "select pj_id,gr,des from pj_gr where pj_id = ? and gr=?";
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -40,7 +40,7 @@ public class PjGrDao extends Dao {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 			pstmt.setString(index++, gr);
 
 			rs = pstmt.executeQuery();
@@ -61,8 +61,8 @@ public class PjGrDao extends Dao {
 	 *            项目
 	 * @return 项目组列表
 	 */
-	public List<PjGr> getList(String pj) {
-		String sql = "select pj,gr,des from pj_gr where pj=? order by pj,gr";
+	public List<PjGr> getList(int pjId) {
+		String sql = "select pj_id,gr,des from pj_gr where pj_id=? order by pj_id,gr";
 		List<PjGr> list = new ArrayList<PjGr>();
 
 		Connection conn = null;
@@ -72,7 +72,7 @@ public class PjGrDao extends Dao {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -96,7 +96,7 @@ public class PjGrDao extends Dao {
 	 */
 	PjGr readPjGr(ResultSet rs) throws SQLException {
 		PjGr result = new PjGr();
-		result.setPj(rs.getString("pj"));
+		result.setPjId(rs.getInt("pj_id"));
 		result.setGr(rs.getString("gr"));
 		result.setDes(rs.getString("des"));
 		return result;
@@ -110,15 +110,15 @@ public class PjGrDao extends Dao {
 	 * @param gr
 	 *            组
 	 */
-	public void delete(String pj, String gr) {
-		String sql = "delete from pj_gr where pj = ? and gr=?";
+	public void delete(int pjId, String gr) {
+		String sql = "delete from pj_gr where pj_id = ? and gr=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 			pstmt.setString(index++, gr);
 
 			pstmt.executeUpdate();
@@ -136,15 +136,15 @@ public class PjGrDao extends Dao {
 	 * @param pj
 	 *            项目
 	 */
-	public void deletePj(String pj) {
-		String sql = "delete from pj_gr where pj = ?";
+	public void deletePj(int pjId) {
+		String sql = "delete from pj_gr where pj_id = ?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -162,15 +162,15 @@ public class PjGrDao extends Dao {
 	 *            项目组
 	 */
 	public void save(PjGr pjGr) {
-		if (this.get(pjGr.getPj(), pjGr.getGr()) == null) {
-			String sql = "insert into pj_gr (pj,gr,des) values (?,?,?)";
+		if (this.get(pjGr.getPjId(), pjGr.getGr()) == null) {
+			String sql = "insert into pj_gr (pj_id,gr,des) values (?,?,?)";
 			Connection conn = null;
 			PreparedStatement pstmt = null;
 			try {
 				conn = this.getConnection();
 				pstmt = conn.prepareStatement(sql);
 				int index = 1;
-				pstmt.setString(index++, pjGr.getPj());
+				pstmt.setInt(index++, pjGr.getPjId());
 				pstmt.setString(index++, pjGr.getGr());
 				pstmt.setString(index++, pjGr.getDes());
 
@@ -182,7 +182,7 @@ public class PjGrDao extends Dao {
 				this.close(null, pstmt, conn);
 			}
 		} else {
-			String sql = "update pj_gr set des=? where pj = ? and gr=?";
+			String sql = "update pj_gr set des=? where pj_id = ? and gr=?";
 			Connection conn = null;
 			PreparedStatement pstmt = null;
 			try {
@@ -190,7 +190,7 @@ public class PjGrDao extends Dao {
 				pstmt = conn.prepareStatement(sql);
 				int index = 1;
 				pstmt.setString(index++, pjGr.getDes());
-				pstmt.setString(index++, pjGr.getPj());
+				pstmt.setInt(index++, pjGr.getPjId());
 				pstmt.setString(index++, pjGr.getGr());
 
 				pstmt.executeUpdate();

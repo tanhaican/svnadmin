@@ -97,7 +97,7 @@ public class UsrService {
 	 *            项目
 	 * @return 所有项目用户列表(不包括*)
 	 */
-	public List<Usr> list(String pj) {
+	public List<Usr> list(Integer pj) {
 		return this.usrDao.getList(pj);
 	}
 
@@ -110,7 +110,7 @@ public class UsrService {
 	 *            组
 	 * @return 项目组未选的用户
 	 */
-	public List<Usr> listUnSelected(String pj, String gr) {
+	public List<Usr> listUnSelected(Integer pj, String gr) {
 		return this.usrDao.listUnSelected(pj, gr);
 	}
 

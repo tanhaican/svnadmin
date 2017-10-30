@@ -9,6 +9,7 @@ import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -73,7 +74,8 @@ public class HttpUtils {
      */
     public static Map<String, String> getParams(HttpServletRequest request){
     	Map<String, String> params = new HashMap<String, String>();
-    	for (String key : request.getParameterMap().keySet()) {
+    	Set<String> keys = request.getParameterMap().keySet();
+    	for (String key : keys) {
     		params.put(key, HttpUtils.urlDecode(request.getParameter(key), "UTF-8"));
 		}
     	return params;

@@ -20,8 +20,6 @@ import org.svnadmin.common.util.HttpUtils;
 import org.svnadmin.common.web.BaseController;
 import org.svnadmin.entity.PjGrUsr;
 import org.svnadmin.service.PjGrUsrService;
-import org.svnadmin.service.PjService;
-import org.svnadmin.service.PjUsrService;
 import org.svnadmin.service.UsrService;
 
 /**
@@ -37,10 +35,6 @@ public class ProjectGrUsrController extends BaseController {
     @Autowired
     private UsrService usrService;
     @Autowired
-    private PjService pjService;
-    @Autowired
-    private PjUsrService pjUsrService;
-    @Autowired
     private PjGrUsrService pjGrUsrService;
 
     /**
@@ -50,7 +44,7 @@ public class ProjectGrUsrController extends BaseController {
      */
     @RequestMapping(value = "pjGrUsrList", method = RequestMethod.GET)
     public String pjGrUsrList(HttpSession session,
-                              @RequestParam("pj")String pj,
+                              @RequestParam("pj")Integer pj,
                               @RequestParam("gr")String gr,ModelMap map) {
         // 账户
         map.put("pj", pj);
@@ -67,7 +61,7 @@ public class ProjectGrUsrController extends BaseController {
     @RequestMapping(value = "pjGrUsrList", method = RequestMethod.GET, params = "action=data")
     @ResponseBody
     public Object pjGrUsrList(HttpSession session,
-                              @RequestParam("pj")String pj,
+                              @RequestParam("pj")Integer pj,
                               @RequestParam("gr")String gr) {
         //组用户账户
         List<PjGrUsr> list = pjGrUsrService.list(pj, gr);
@@ -87,7 +81,8 @@ public class ProjectGrUsrController extends BaseController {
     @ResponseBody
     public Object pjGrUsrAddHandler(HttpServletRequest request) {
         Map<String, String> params = HttpUtils.getParams(request);
-        String pj = params.get("pj");
+        String pjStr = params.get("pj");
+        Integer pj = Integer.valueOf(pjStr);
         String gr = params.get("gr");
         String[] usrs = StringUtils.isEmpty(params.get("usrs"))? null:params.get("usrs").split(",");
         this.pjGrUsrService.save(pj, gr, usrs);
@@ -104,7 +99,8 @@ public class ProjectGrUsrController extends BaseController {
     @ResponseBody
     public Object pjGrUsrRemoveHandler(HttpServletRequest request) {
         Map<String, String> params = HttpUtils.getParams(request);
-        String pj = params.get("pj");
+        String pjStr = params.get("pj");
+        Integer pj = Integer.valueOf(pjStr);
         String gr = params.get("gr");
         String usr = params.get("usr");
         this.pjGrUsrService.delete(pj, gr, usr);

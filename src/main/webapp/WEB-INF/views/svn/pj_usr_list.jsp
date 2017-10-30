@@ -23,7 +23,7 @@
                         <div class="ibox-content">
                             <div class="row">
                                 <div class="qry-form">
-                                    <input type="hidden" value="${pj.pj}" class="select_pj"/>
+                                    <input type="hidden" value="${pj.id}" class="select_pj"/>
                                     <button type="button" class="btn btn-primary btn-sm margin-bottom-empty" id="addBtn">+ 添加项目用户</button>
                                 </div>
                             </div>

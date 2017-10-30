@@ -50,27 +50,27 @@ public class PjAuthService {
 	 *            项目
 	 * @return 项目的资源列表
 	 */
-	public List<String> getResList(String pj) {
-		return pjAuthDao.getResList(pj);
+	public List<String> getResList(int pjId) {
+		return pjAuthDao.getResList(pjId);
 	}
 
 	/**
-	 * @param pj
+	 * @param pjId
 	 *            项目
 	 * @param res 资源
 	 * @return 项目资源的权限列表
 	 */
-	public List<PjAuth> list(String pj,String res) {
+	public List<PjAuth> list(int pjId,String res) {
 		if(StringUtils.isBlank(res)){
-			return pjAuthDao.getList(pj);
+			return pjAuthDao.getList(pjId);
 		}
-		return pjAuthDao.getList(pj,res);
+		return pjAuthDao.getList(pjId,res);
 	}
 
 	/**
 	 * 删除项目 组资源的权限
 	 * 
-	 * @param pj
+	 * @param pjId
 	 *            项目
 	 * @param gr
 	 *            组
@@ -78,15 +78,15 @@ public class PjAuthService {
 	 *            资源
 	 */
 	@Transactional
-	public void deleteByGr(String pj, String gr,String res) {
-		pjAuthDao.deleteByGr(pj, gr, res);
-		svnService.exportConfig(pj);
+	public void deleteByGr(int pjId, String gr,String res) {
+		pjAuthDao.deleteByGr(pjId, gr, res);
+		svnService.exportConfig(pjId);
 	}
 
 	/**
 	 * 删除项目用户资源的权限
 	 * 
-	 * @param pj
+	 * @param pjId
 	 *            项目
 	 * @param usr
 	 *            用户
@@ -94,22 +94,22 @@ public class PjAuthService {
 	 *            资源
 	 */
 	@Transactional
-	public void deleteByUsr(String pj, String usr,String res) {
-		pjAuthDao.deleteByUsr(pj, usr, res);
-		svnService.exportConfig(pj);
+	public void deleteByUsr(int pjId, String usr,String res) {
+		pjAuthDao.deleteByUsr(pjId, usr, res);
+		svnService.exportConfig(pjId);
 	}
 
 	/**
 	 * 保存
-	 * @param pj 项目
+	 * @param pjId 项目
 	 * @param res 资源
 	 * @param rw 可读可写
 	 * @param grs 组
 	 * @param usrs 用户
 	 */
 	@Transactional
-	public void save(String pj,String res,String rw, String[] grs, String[] usrs) {
-		res = this.formatRes(pj, res);//如果资源没有[],自动加上
+	public void save(int pjId,String res,String rw, String[] grs, String[] usrs) {
+		res = this.formatRes(pjId, res);//如果资源没有[],自动加上
 		//gr
 		if(grs!=null){
 			for (String gr : grs) {
@@ -117,7 +117,7 @@ public class PjAuthService {
 					continue;
 				}
 				PjAuth pjAuth = new PjAuth();
-				pjAuth.setPj(pj);
+				pjAuth.setPjId(pjId);
 				pjAuth.setRes(res);
 				pjAuth.setRw(rw);
 				pjAuth.setGr(gr);
@@ -131,7 +131,7 @@ public class PjAuthService {
 					continue;
 				}
 				PjAuth pjAuth = new PjAuth();
-				pjAuth.setPj(pj);
+				pjAuth.setPjId(pjId);
 				pjAuth.setRes(res);
 				pjAuth.setRw(rw);
 				pjAuth.setUsr(usr);
@@ -139,20 +139,20 @@ public class PjAuthService {
 			}
 		}
 		//export
-		svnService.exportConfig(pj);
+		svnService.exportConfig(pjId);
 	}
 	
 	/**
 	 * 格式化资源.如果资源没有[],自动加上[relateRoot:/]
-	 * @param pj 项目id
+	 * @param pjId 项目id
 	 * @param res 资源
 	 * @return 格式化后的资源
 	 * @since 3.0.3
 	 */
-	public String formatRes(String pj,String res){
+	public String formatRes(int pjId,String res){
 		//如果资源没有[],自动加上
 //		if(!res.startsWith("[") && !res.endsWith("]")){
-			return this.formatRes(this.pjDao.get(pj), res);
+			return this.formatRes(this.pjDao.getById(pjId), res);
 //		}
 //		return res;
 	}

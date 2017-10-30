@@ -35,8 +35,8 @@ public class PjAuthDao extends Dao {
 	 *            资源
 	 * @return 项目组资源的权限
 	 */
-	public PjAuth getByGr(String pj, String gr, String res) {
-		String sql = "select pj,res,rw,gr,' ' usr,' ' usrname from pj_gr_auth where pj = ? and gr=? and res=? ";
+	public PjAuth getByGr(int pjId, String gr, String res) {
+		String sql = "select pj_id,res,rw,gr,' ' usr,' ' usrname from pj_gr_auth where pj_id = ? and gr=? and res=? ";
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -45,7 +45,7 @@ public class PjAuthDao extends Dao {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 			pstmt.setString(index++, gr);
 			pstmt.setString(index++, res);
 
@@ -71,8 +71,8 @@ public class PjAuthDao extends Dao {
 	 *            资源
 	 * @return 项目用户资源的权限
 	 */
-	public PjAuth getByUsr(String pj, String usr, String res) {
-		String sql = "select a.pj,a.res,a.rw,b.usr,b.name as usrname,' ' gr from pj_usr_auth a left join usr b on (a.usr=b.usr) where a.pj = ? and a.usr=? and a.res=? ";
+	public PjAuth getByUsr(int pjId, String usr, String res) {
+		String sql = "select a.pj_id,a.res,a.rw,b.usr,b.name as usrname,' ' gr from pj_usr_auth a left join usr b on (a.usr=b.usr) where a.pj_id = ? and a.usr=? and a.res=? ";
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -81,7 +81,7 @@ public class PjAuthDao extends Dao {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 			pstmt.setString(index++, usr);
 			pstmt.setString(index++, res);
 
@@ -103,20 +103,16 @@ public class PjAuthDao extends Dao {
 	 * @return 用户的权限
 	 */
 	public List<PjAuth> getByUsr(String usr) {
-		String sql = "select b.pj,p.des,b.usr,b.res,b.rw from usr a";
-		sql+=" join pj_usr_auth b on (a.usr = b.usr)";
-		sql+=" join pj p on (b.pj=p.pj)";
-		sql+=" where a.usr=?";
+		String sql = "SELECT b.pj_id, p.des, b.usr, b.res, b.rw"
+				+ " FROM usr a JOIN pj_usr_auth b ON a.usr = b.usr JOIN pj p ON b.pj_id = p.id"
+				+ " WHERE a.usr = ?"
+				+ " UNION ALL"
+				+ " (SELECT c.pj_id, p.des, a.usr, c.res, c.rw"
+				+ " FROM usr a JOIN pj_gr_usr b ON a.usr = b.usr JOIN pj_gr_auth c ON b.pj_id = c.pj_id"
+				+ " AND b.gr = c.gr JOIN pj p ON b.pj_id = p.id"
+				+ " WHERE a.usr = ?"
+				+ " ORDER BY 1, 4)";
 
-		sql+=" union all";
-
-		sql+=" select c.pj,p.des,a.usr,c.res,c.rw from usr a";
-		sql+=" join pj_gr_usr b on (a.usr = b.usr)";
-		sql+=" join pj_gr_auth c on (b.pj = c.pj and b.gr = c.gr)";
-		sql+=" join pj p on (b.pj=p.pj)";
-		sql+=" where a.usr=?";
-
-		sql+=" order by 1,4";//TODO 为了兼容sqlserver
 		
 		List<PjAuth> list = new ArrayList<PjAuth>();
 		
@@ -132,9 +128,8 @@ public class PjAuthDao extends Dao {
 			
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				
 				PjAuth result = new PjAuth();
-				result.setPj(rs.getString("pj"));
+				result.setPjId(rs.getInt("pj_id"));
 				result.setDes(rs.getString("des"));
 				result.setUsr(rs.getString("usr"));
 				result.setRes(rs.getString("res"));
@@ -161,10 +156,10 @@ public class PjAuthDao extends Dao {
 	 * @param res 资源
 	 * @return 项目资源的权限列表
 	 */
-	public List<PjAuth> getList(String pj,String res) {
-		String sql = "select pj,res,rw,gr,' ' usr,' ' usrname from pj_gr_auth where pj=? and res = ? "
+	public List<PjAuth> getList(int pjId, String res) {
+		String sql = "select pj_id,res,rw,gr,' ' usr,' ' usrname from pj_gr_auth where pj_id=? and res = ? "
 				+ " UNION "
-				+ " select a.pj,a.res,a.rw,' ' gr,a.usr,b.name as usrname from pj_usr_auth a left join usr b on (a.usr=b.usr) where a.pj=? and a.res = ? "
+				+ " select a.pj_id,a.res,a.rw,' ' gr,a.usr,b.name as usrname from pj_usr_auth a left join usr b on (a.usr=b.usr) where a.pj_id=? and a.res = ? "
 				+ " order by res,gr,usr";
 		List<PjAuth> list = new ArrayList<PjAuth>();
 
@@ -175,9 +170,9 @@ public class PjAuthDao extends Dao {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 			pstmt.setString(index++, res);
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 			pstmt.setString(index++, res);
 
 			rs = pstmt.executeQuery();
@@ -197,10 +192,10 @@ public class PjAuthDao extends Dao {
 	 *            项目
 	 * @return 项目资源的权限列表
 	 */
-	public List<PjAuth> getList(String pj) {
-		String sql = "select pj,res,rw,gr,' ' usr,' ' usrname from pj_gr_auth where pj=? "
+	public List<PjAuth> getList(int pjId) {
+		String sql = "select pj_id,res,rw,gr,' ' usr,' ' usrname from pj_gr_auth where pj_id=? "
 				+ " UNION "
-				+ " select a.pj,a.res,a.rw,' ' gr,a.usr,b.name as usrname from pj_usr_auth a left join usr b on (a.usr = b.usr) where a.pj=? "
+				+ " select a.pj_id,a.res,a.rw,' ' gr,a.usr,b.name as usrname from pj_usr_auth a left join usr b on (a.usr = b.usr) where a.pj_id=? "
 				+ " order by res,gr,usr";
 		List<PjAuth> list = new ArrayList<PjAuth>();
 
@@ -211,8 +206,8 @@ public class PjAuthDao extends Dao {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
+			pstmt.setInt(index++, pjId);
 
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -233,9 +228,9 @@ public class PjAuthDao extends Dao {
 	 * @return 具有相同svn root的项目资源的权限列表
 	 */
 	public List<PjAuth> getListByRootPath(String rootPath) {
-		String sql = "select pj,res,rw,gr,' ' usr,' ' usrname from pj_gr_auth where pj in (select distinct pj from pj where type=? and path like ?) "
+		String sql = "select pj_id,res,rw,gr,' ' usr,' ' usrname from pj_gr_auth where pj_id in (select distinct id from pj where type=? and path like ?) "
 				+ " UNION "
-				+ " select a.pj,a.res,a.rw,' ' gr,a.usr,b.name usrname from pj_usr_auth a left join usr b on (a.usr=b.usr) where a.pj in (select distinct pj from pj where type=? and path like ?) "
+				+ " select a.pj_id,a.res,a.rw,' ' gr,a.usr,b.name usrname from pj_usr_auth a left join usr b on (a.usr=b.usr) where a.pj_id in (select distinct id from pj where type=? and path like ?) "
 				+ " order by res,gr,usr";
 		List<PjAuth> list = new ArrayList<PjAuth>();
 
@@ -273,7 +268,7 @@ public class PjAuthDao extends Dao {
 	 */
 	PjAuth readPjAuth(ResultSet rs) throws SQLException {
 		PjAuth result = new PjAuth();
-		result.setPj(rs.getString("pj"));
+		result.setPjId(rs.getInt("pj_id"));
 		result.setGr(rs.getString("gr"));
 		result.setUsr(rs.getString("usr"));
 		result.setUsrName(rs.getString("usrname"));
@@ -297,15 +292,15 @@ public class PjAuthDao extends Dao {
 	 * @param res
 	 *            资源
 	 */
-	public void deleteByGr(String pj, String gr, String res) {
-		String sql = "delete from pj_gr_auth where pj = ? and gr=? and res=? ";
+	public void deleteByGr(int pjId, String gr, String res) {
+		String sql = "delete from pj_gr_auth where pj_id = ? and gr=? and res=? ";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 			pstmt.setString(index++, gr);
 			pstmt.setString(index++, res);
 
@@ -328,15 +323,15 @@ public class PjAuthDao extends Dao {
 	 * @param res
 	 *            资源
 	 */
-	public void deleteByUsr(String pj, String usr, String res) {
-		String sql = "delete from pj_usr_auth where pj = ? and usr=? and res=? ";
+	public void deleteByUsr(int pjId, String usr, String res) {
+		String sql = "delete from pj_usr_auth where pj_id = ? and usr=? and res=? ";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 			pstmt.setString(index++, usr);
 			pstmt.setString(index++, res);
 
@@ -355,16 +350,16 @@ public class PjAuthDao extends Dao {
 	 * @param pj
 	 *            项目
 	 */
-	public void deletePj(String pj) {
+	public void deletePj(int pjId) {
 		// pj_gr_auth
-		String sql = "delete from pj_gr_auth where pj = ?";
+		String sql = "delete from pj_gr_auth where pj_id = ?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -374,12 +369,12 @@ public class PjAuthDao extends Dao {
 			this.close(null, pstmt, conn);
 		}
 		// pj_usr_auth
-		sql = "delete from pj_usr_auth where pj = ?";
+		sql = "delete from pj_usr_auth where pj_id = ?";
 		try {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -398,7 +393,7 @@ public class PjAuthDao extends Dao {
 	 * @param gr
 	 *            组
 	 */
-	public void deletePjGr(String pj, String gr) {
+	public void deletePjGr(int pjId, String gr) {
 		String sql = "delete from pj_gr_auth where pj = ? and gr=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -406,7 +401,7 @@ public class PjAuthDao extends Dao {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 			pstmt.setString(index++, gr);
 
 			pstmt.executeUpdate();
@@ -450,8 +445,8 @@ public class PjAuthDao extends Dao {
 	 *            项目组权限
 	 */
 	public void saveByGr(PjAuth pjAuth) {
-		if (this.getByGr(pjAuth.getPj(), pjAuth.getGr(), pjAuth.getRes()) == null) {
-			String sql = "insert into pj_gr_auth (pj,gr,res,rw) values (?,?,?,?)";
+		if (this.getByGr(pjAuth.getPjId(), pjAuth.getGr(), pjAuth.getRes()) == null) {
+			String sql = "insert into pj_gr_auth (pj_id,gr,res,rw) values (?,?,?,?)";
 
 			Connection conn = null;
 			PreparedStatement pstmt = null;
@@ -459,7 +454,7 @@ public class PjAuthDao extends Dao {
 				conn = this.getConnection();
 				pstmt = conn.prepareStatement(sql);
 				int index = 1;
-				pstmt.setString(index++, pjAuth.getPj());
+				pstmt.setInt(index++, pjAuth.getPjId());
 				pstmt.setString(index++, pjAuth.getGr());
 				pstmt.setString(index++, pjAuth.getRes());
 				pstmt.setString(index++, pjAuth.getRw());
@@ -472,7 +467,7 @@ public class PjAuthDao extends Dao {
 				this.close(null, pstmt, conn);
 			}
 		} else {
-			String sql = "update pj_gr_auth set rw=? where pj=? and gr=? and res=?";
+			String sql = "update pj_gr_auth set rw=? where pj_id=? and gr=? and res=?";
 
 			Connection conn = null;
 			PreparedStatement pstmt = null;
@@ -481,7 +476,7 @@ public class PjAuthDao extends Dao {
 				pstmt = conn.prepareStatement(sql);
 				int index = 1;
 				pstmt.setString(index++, pjAuth.getRw());
-				pstmt.setString(index++, pjAuth.getPj());
+				pstmt.setInt(index++, pjAuth.getPjId());
 				pstmt.setString(index++, pjAuth.getGr());
 				pstmt.setString(index++, pjAuth.getRes());
 
@@ -502,8 +497,8 @@ public class PjAuthDao extends Dao {
 	 *            项目用户权限
 	 */
 	public void saveByUsr(PjAuth pjAuth) {
-		if (this.getByUsr(pjAuth.getPj(), pjAuth.getUsr(), pjAuth.getRes()) == null) {
-			String sql = "insert into pj_usr_auth (pj,usr,res,rw) values (?,?,?,?)";
+		if (this.getByUsr(pjAuth.getPjId(), pjAuth.getUsr(), pjAuth.getRes()) == null) {
+			String sql = "insert into pj_usr_auth (pj_id,usr,res,rw) values (?,?,?,?)";
 
 			Connection conn = null;
 			PreparedStatement pstmt = null;
@@ -511,7 +506,7 @@ public class PjAuthDao extends Dao {
 				conn = this.getConnection();
 				pstmt = conn.prepareStatement(sql);
 				int index = 1;
-				pstmt.setString(index++, pjAuth.getPj());
+				pstmt.setInt(index++, pjAuth.getPjId());
 				pstmt.setString(index++, pjAuth.getUsr());
 				pstmt.setString(index++, pjAuth.getRes());
 				pstmt.setString(index++, pjAuth.getRw());
@@ -524,7 +519,7 @@ public class PjAuthDao extends Dao {
 				this.close(null, pstmt, conn);
 			}
 		} else {
-			String sql = "update pj_usr_auth set rw=? where pj=? and usr=? and res=?";
+			String sql = "update pj_usr_auth set rw=? where pj_id=? and usr=? and res=?";
 
 			Connection conn = null;
 			PreparedStatement pstmt = null;
@@ -533,7 +528,7 @@ public class PjAuthDao extends Dao {
 				pstmt = conn.prepareStatement(sql);
 				int index = 1;
 				pstmt.setString(index++, pjAuth.getRw());
-				pstmt.setString(index++, pjAuth.getPj());
+				pstmt.setInt(index++, pjAuth.getPjId());
 				pstmt.setString(index++, pjAuth.getUsr());
 				pstmt.setString(index++, pjAuth.getRes());
 
@@ -552,9 +547,9 @@ public class PjAuthDao extends Dao {
 	 *            项目
 	 * @return 项目的资源列表
 	 */
-	public List<String> getResList(String pj) {
-		String sql = "select distinct res from pj_gr_auth where pj=? "
-				+ " UNION select distinct res from pj_usr_auth where pj=? order by res";
+	public List<String> getResList(int pjId) {
+		String sql = "select distinct res from pj_gr_auth where pj_id=? "
+				+ " UNION select distinct res from pj_usr_auth where pj_id=? order by res";
 
 		List<String> list = new ArrayList<String>();
 		Connection conn = null;
@@ -564,8 +559,8 @@ public class PjAuthDao extends Dao {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
+			pstmt.setInt(index++, pjId);
 
 			rs = pstmt.executeQuery();
 			while (rs.next()) {

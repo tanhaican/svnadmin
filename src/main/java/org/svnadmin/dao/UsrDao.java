@@ -91,9 +91,9 @@ public class UsrDao extends Dao {
 	 *            组
 	 * @return 项目组未选的用户(不包括*)
 	 */
-	public List<Usr> listUnSelected(String pj, String gr) {
+	public List<Usr> listUnSelected(int pjId, String gr) {
 		String sql = "select usr,name,psw,role from usr a where a.usr <> '*' "
-				+ " and not exists (select usr from pj_gr_usr b where a.usr = b.usr and b.pj=? and b.gr=?) order by a.usr";
+				+ " and not exists (select usr from pj_gr_usr b where a.usr = b.usr and b.pj_id=? and b.gr=?) order by a.usr";
 		List<Usr> list = new ArrayList<Usr>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -102,7 +102,7 @@ public class UsrDao extends Dao {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 			pstmt.setString(index++, gr);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -122,14 +122,14 @@ public class UsrDao extends Dao {
 	 *            项目
 	 * @return 所有项目用户列表(不包括*)
 	 */
-	public List<Usr> getList(String pj) {
+	public List<Usr> getList(int pjId) {
 		String sql = "select p.usr,p.name,p.role,CASE WHEN pu.psw IS NOT NULL THEN pu.psw ELSE p.psw END psw from ("
 				+ " select a.usr,a.role,a.psw,a.name from usr a "
 				+ " where "
-				+ " exists (select d.usr from pj_gr_usr d where d.usr=a.usr and d.pj=?) "
-				+ " or exists(select c.usr from pj_usr_auth c where a.usr=c.usr and c.pj=?) "
+				+ " exists (select d.usr from pj_gr_usr d where d.usr=a.usr and d.pj_id=?) "
+				+ " or exists(select c.usr from pj_usr_auth c where a.usr=c.usr and c.pj_id=?) "
 				+ " ) p "
-				+ " left join pj_usr pu on (p.usr=pu.usr and pu.pj=?) where p.usr <> '*'"
+				+ " left join pj_usr pu on (p.usr=pu.usr and pu.pj_id=?) where p.usr <> '*'"
 				+ " order by p.usr ";
 
 		List<Usr> list = new ArrayList<Usr>();
@@ -140,9 +140,9 @@ public class UsrDao extends Dao {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
-			pstmt.setString(index++, pj);
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
+			pstmt.setInt(index++, pjId);
+			pstmt.setInt(index++, pjId);
 
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -166,8 +166,8 @@ public class UsrDao extends Dao {
 		String sql = "select p.usr,p.name,p.role,CASE WHEN pu.psw IS NOT NULL THEN pu.psw ELSE p.psw END psw from ("
 				+ " select a.usr,a.role,a.psw,a.name from usr a "
 				+ " where "
-				+ " exists (select d.usr from pj_gr_usr d where d.usr=a.usr and d.pj in (select distinct pj from pj where type=? and path like ?)) "
-				+ " or exists(select c.usr from pj_usr_auth c where a.usr=c.usr and c.pj in (select distinct pj from pj where type=? and path like ?)) "
+				+ " exists (select d.usr from pj_gr_usr d where d.usr=a.usr and d.pj_id in (select distinct id from pj where type=? and path like ?)) "
+				+ " or exists(select c.usr from pj_usr_auth c where a.usr=c.usr and c.pj_id in (select distinct id from pj where type=? and path like ?)) "
 				+ " ) p "
 				+ " left join pj_usr pu on (p.usr=pu.usr) where p.usr <> '*'"
 				+ " order by p.usr ";
@@ -303,7 +303,7 @@ public class UsrDao extends Dao {
 	 * @return 总数(不包括*)
 	 */
 	public int getCount() {
-		String sql = "select count(1) from usr where usr <> '*'";
+		String sql = "select count(*) from usr where usr <> '*'";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;

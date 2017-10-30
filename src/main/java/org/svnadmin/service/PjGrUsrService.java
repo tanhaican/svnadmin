@@ -46,7 +46,7 @@ public class PjGrUsrService {
 	 *            用户
 	 * @return 组用户
 	 */
-	public PjGrUsr get(String pj, String gr, String usr) {
+	public PjGrUsr get(int pj, String gr, String usr) {
 		return pjGrUsrDao.get(pj, gr, usr);
 	}
 
@@ -57,7 +57,7 @@ public class PjGrUsrService {
 	 *            组
 	 * @return 组用户列表
 	 */
-	public List<PjGrUsr> list(String pj, String gr) {
+	public List<PjGrUsr> list(int pj, String gr) {
 		return pjGrUsrDao.getList(pj, gr);
 	}
 
@@ -72,7 +72,7 @@ public class PjGrUsrService {
 	 *            用户
 	 */
 	@Transactional
-	public void save(String pj, String gr, String[] usrs) {
+	public void save(int pj, String gr, String[] usrs) {
 
 		if (usrs == null || usrs.length == 0) {
 			return;
@@ -83,7 +83,7 @@ public class PjGrUsrService {
 				continue;
 			}
 			PjGrUsr pjGrUsr = new PjGrUsr();
-			pjGrUsr.setPj(pj);
+			pjGrUsr.setPjId(pj);
 			pjGrUsr.setGr(gr);
 			pjGrUsr.setUsr(usr);
 			pjGrUsrDao.save(pjGrUsr);
@@ -103,7 +103,7 @@ public class PjGrUsrService {
 	 *            用户
 	 */
 	@Transactional
-	public void delete(String pj, String gr, String usr) {
+	public void delete(int pj, String gr, String usr) {
 		pjGrUsrDao.delete(pj, gr, usr);
 		svnService.exportConfig(pj);
 	}
@@ -114,7 +114,7 @@ public class PjGrUsrService {
 	 * @param pj 项目
 	 * @return 有权限返回true,否则返回false
 	 */
-	public boolean hasManagerRight(Usr usr,String pj){
+	public boolean hasManagerRight(Usr usr, Integer pj){
 		if (pj == null) {
 			return false;
 		}

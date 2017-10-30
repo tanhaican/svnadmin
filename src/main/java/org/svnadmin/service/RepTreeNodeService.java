@@ -51,13 +51,15 @@ public class RepTreeNodeService extends AbstractTreeNodeService {
 			Map<String, Object> parameters) {
 		List<TreeNode> results = new ArrayList<TreeNode>();
 		
-		String pj = (String) parameters.get("pj");
-		String path = (String) parameters.get("path");
-		path = StringUtils.replace(path, AND, "&");
-		if(StringUtils.isBlank(pj)){
+		String pjStr = (String) parameters.get("pj");
+		if(StringUtils.isBlank(pjStr)){
 			LOG.warn("pj id is blank ");
 			return null;
 		}
+		Integer pj = Integer.valueOf(pjStr);
+		String path = (String) parameters.get("path");
+		path = StringUtils.replace(path, AND, "&");
+		
 		try{
 			Collection<SVNDirEntry> entries = this.repositoryService.getDir(pj, path);
 			if(entries == null){
@@ -74,7 +76,7 @@ public class RepTreeNodeService extends AbstractTreeNodeService {
 //	    				+","+svnDirEntry.getDate());//日期
 	    		 TreeNode treeNode = new TreeNode(svnDirEntry.getName());
 	    		 treeNode.setLeaf(SVNNodeKind.FILE.equals(svnDirEntry.getKind()));//叶子?
-	    		 treeNode.addParamete("pj", pj);
+	    		 treeNode.addParamete("pj", pjStr);
 	    		 if(path.endsWith("/")){
 	    			 treeNode.addParamete("path", path+StringUtils.replace(svnDirEntry.getName(), "&", AND));
 	    		 }else{

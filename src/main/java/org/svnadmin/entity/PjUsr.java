@@ -14,21 +14,21 @@ public class PjUsr extends Usr {
 	/**
 	 * 项目ID
 	 */
-	private String pj;
+	private Integer pjId;
 
 	/**
 	 * @return 项目ID
 	 */
-	public String getPj() {
-		return pj;
+	public Integer getPjId() {
+		return pjId;
 	}
 
 	/**
 	 * @param pj
 	 *            项目ID
 	 */
-	public void setPj(String pj) {
-		this.pj = pj;
+	public void setPjId(Integer pjId) {
+		this.pjId = pjId;
 	}
 
 }

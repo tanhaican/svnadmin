@@ -16,7 +16,7 @@ public class PjGr implements Serializable{
 	/**
 	 * 项目
 	 */
-	private String pj;
+	private Integer pjId;
 	/**
 	 * 组
 	 */
@@ -29,16 +29,16 @@ public class PjGr implements Serializable{
 	/**
 	 * @return 项目
 	 */
-	public String getPj() {
-		return pj;
+	public Integer getPjId() {
+		return pjId;
 	}
 
 	/**
 	 * @param pj
 	 *            项目
 	 */
-	public void setPj(String pj) {
-		this.pj = pj;
+	public void setPjId(Integer pjId) {
+		this.pjId = pjId;
 	}
 
 	/**

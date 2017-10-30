@@ -105,7 +105,7 @@ public class ProjectController extends BaseController {
     @AdminAuthPassport
     @RequestMapping(value = "pjDelete", method = RequestMethod.POST)
     @ResponseBody
-    public Object pjDelete(HttpSession session, @RequestParam("pj")String pj, ModelMap map) {
+    public Object pjDelete(HttpSession session, @RequestParam("pj")Integer pj, ModelMap map) {
     	try {
             pjService.delete(pj);
             return pushMsg("项目删除成功", true , "url" , "pjList");

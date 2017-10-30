@@ -48,6 +48,6 @@ public class Constants {
 	/**
 	 * 管理员角色代码
 	 */
-	public static final String USR_ROLE_ADMIN = "admin";
+	public static final String USR_ROLE_ADMIN = "sadmin";
 
 }

@@ -56,17 +56,17 @@ public class PjGrService {
 	 *            组
 	 * @return 项目组
 	 */
-	public PjGr get(String pj, String gr) {
-		return pjGrDao.get(pj, gr);
+	public PjGr get(int pjId, String gr) {
+		return pjGrDao.get(pjId, gr);
 	}
 
 	/**
-	 * @param pj
+	 * @param pjId
 	 *            项目
 	 * @return 项目组列表
 	 */
-	public List<PjGr> list(String pj) {
-		return pjGrDao.getList(pj);
+	public List<PjGr> list(int pjId) {
+		return pjGrDao.getList(pjId);
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class PjGrService {
 	 *            组
 	 */
 	@Transactional
-	public void delete(String pj, String gr) {
+	public void delete(int pj, String gr) {
 		pjAuthDao.deletePjGr(pj, gr);
 		pjGrUsrDao.deletePjGr(pj, gr);
 		pjGrDao.delete(pj, gr);
@@ -95,6 +95,6 @@ public class PjGrService {
 	@Transactional
 	public void save(PjGr pjGr) {
 		pjGrDao.save(pjGr);
-		svnService.exportConfig(pjGr.getPj());
+		svnService.exportConfig(pjGr.getPjId());
 	}
 }

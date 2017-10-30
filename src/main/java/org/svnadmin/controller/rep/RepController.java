@@ -62,7 +62,7 @@ public class RepController extends BaseController {
      */
     @RequestMapping(value = "repository", method = RequestMethod.GET)
     public String repository(HttpSession session,
-                             @RequestParam("pj")String _pj,ModelMap map) {
+                             @RequestParam("pj")Integer _pj,ModelMap map) {
         Pj pj = pjService.get(_pj);
         map.put("pj", pj);
         map.put("usrList", usrService.list());
@@ -95,7 +95,8 @@ public class RepController extends BaseController {
     @ResponseBody
     public Object repPathAuth(HttpServletRequest request) {
         Map<String, String> params = HttpUtils.getParams(request);
-        String pj = params.get("pj");
+        String pjStr = params.get("pj");
+        Integer pj = Integer.valueOf(pjStr);
         String res = params.get("res");
         if(StringUtils.isBlank(res)){
             String path = params.get("path");//从rep 树点击进来，传递的是path
@@ -122,7 +123,8 @@ public class RepController extends BaseController {
     @ResponseBody
     public Object pjCreateHandler(HttpServletRequest request) {
         Map<String, String> params = HttpUtils.getParams(request);
-        String pj = params.get("pj");
+        String pjStr = params.get("pj");
+        Integer pj = Integer.valueOf(pjStr);
         String res = params.get("res");
 
         String[] grs = StringUtils.isEmpty(params.get("grs"))? null:params.get("grs").split(",");
@@ -130,7 +132,7 @@ public class RepController extends BaseController {
 
         String rw = params.get("rw");
         PjAuth entity = new PjAuth();
-        entity.setPj(pj);
+        entity.setPjId(pj);
         entity.setRes(res);
         request.setAttribute("entity", entity);
         pjAuthService.save(pj, res, rw, grs, usrs);
@@ -146,7 +148,8 @@ public class RepController extends BaseController {
     @ResponseBody
     public Object repPathAuthRemoveHandler(HttpServletRequest request) {
         Map<String, String> params = HttpUtils.getParams(request);
-        String pj = params.get("pj");
+        String pjStr = params.get("pj");
+        Integer pj = Integer.valueOf(pjStr);
         String gr = params.get("gr");
         String usr = params.get("usr");
         String res = params.get("res");

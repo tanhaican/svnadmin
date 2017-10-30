@@ -11,7 +11,7 @@ import org.svnadmin.entity.Config;
 /**
  * 用户DAO
  * 
- * @author <a href="mailto:yuanhuiwu@gmail.com">Huiwu Yuan</a>
+ * @author <a href="mailto:tanhaican@gmail.com">Danny</a>
  * 
  */
 @Repository(CommonDao.BEAN_NAME)

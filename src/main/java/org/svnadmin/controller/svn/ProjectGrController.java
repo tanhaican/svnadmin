@@ -18,7 +18,6 @@ import org.svnadmin.common.web.BaseController;
 import org.svnadmin.entity.PjGr;
 import org.svnadmin.service.PjGrService;
 import org.svnadmin.service.PjService;
-import org.svnadmin.service.UsrService;
 
 /**
  * SVN项目用户组管理控制器
@@ -31,8 +30,6 @@ import org.svnadmin.service.UsrService;
 public class ProjectGrController extends BaseController {
 
     @Autowired
-    private UsrService usrService;
-    @Autowired
     private PjService pjService;
     @Autowired
     private PjGrService pjGrService;
@@ -43,7 +40,7 @@ public class ProjectGrController extends BaseController {
      * @return
      */
     @RequestMapping(value = "pjGrList", method = RequestMethod.GET)
-    public String pjGrList(HttpSession session,@RequestParam("pj")String pj, ModelMap map) {
+    public String pjGrList(HttpSession session,@RequestParam("pj")Integer pj, ModelMap map) {
         map.put("pj", pjService.get(pj));
         return "svn/pj_gr_list";
     }
@@ -55,7 +52,7 @@ public class ProjectGrController extends BaseController {
      */
     @RequestMapping(value = "pjGrList", method = RequestMethod.GET, params = "action=data")
     @ResponseBody
-    public Object pjGrList(HttpSession session,@RequestParam("pj")String pj) {
+    public Object pjGrList(HttpSession session,@RequestParam("pj")Integer pj) {
         // 项目账户
         List<PjGr> list = pjGrService.list(pj);
         PageBean<PjGr> pageBean = new PageBean<PjGr>();
@@ -85,8 +82,8 @@ public class ProjectGrController extends BaseController {
     @AdminAuthPassport
     @RequestMapping(value = "pjGrRemoveHandler", method = RequestMethod.POST)
     @ResponseBody
-    public Object pjGrRemoveHandler(HttpServletRequest request,PjGr entity) {
-        pjGrService.delete(entity.getPj(), entity.getGr());
+    public Object pjGrRemoveHandler(HttpServletRequest request, PjGr entity) {
+        pjGrService.delete(entity.getPjId(), entity.getGr());
         return pushMsg("删除项目用户组成功", true);
     }
 }

@@ -42,7 +42,7 @@ public class PjUsrService {
 	 *            用户
 	 * @return 项目用户
 	 */
-	public PjUsr get(String pj, String usr) {
+	public PjUsr get(Integer pj, String usr) {
 		return pjUsrDao.get(pj, usr);
 	}
 
@@ -51,7 +51,7 @@ public class PjUsrService {
 	 *            项目
 	 * @return 项目的用户列表
 	 */
-	public List<PjUsr> list(String pj) {
+	public List<PjUsr> list(Integer pj) {
 		return pjUsrDao.getList(pj);
 	}
 
@@ -64,7 +64,7 @@ public class PjUsrService {
 	 *            用户
 	 */
 	@Transactional
-	public void delete(String pj, String usr) {
+	public void delete(Integer pj, String usr) {
 		pjUsrDao.delete(pj, usr);
 
 		svnService.exportConfig(pj);
@@ -78,11 +78,11 @@ public class PjUsrService {
 	 */
 	@Transactional
 	public void save(PjUsr pjUsr) {
-		if (this.pjUsrDao.get(pjUsr.getPj(), pjUsr.getUsr()) == null) {
+		if (this.pjUsrDao.get(pjUsr.getPjId(), pjUsr.getUsr()) == null) {
 			this.pjUsrDao.insert(pjUsr);
 		} else {
 			this.pjUsrDao.update(pjUsr);
 		}
-		svnService.exportConfig(pjUsr.getPj());
+		svnService.exportConfig(pjUsr.getPjId());
 	}
 }

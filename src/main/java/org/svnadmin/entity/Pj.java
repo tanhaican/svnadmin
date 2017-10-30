@@ -16,6 +16,7 @@ public class Pj implements Serializable{
 	/**
 	 * 项目ID
 	 */
+	private Integer id;
 	private String pj;
 	/**
 	 * 仓库位置
@@ -42,14 +43,22 @@ public class Pj implements Serializable{
 	/**
 	 * @return 项目ID
 	 */
+	public Integer getId() {
+		return id;
+	}
+
+	/**
+	 * @return 项目ID
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	
 	public String getPj() {
 		return pj;
 	}
 
-	/**
-	 * @param pj
-	 *            项目ID
-	 */
 	public void setPj(String pj) {
 		this.pj = pj;
 	}

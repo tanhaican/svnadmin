@@ -79,8 +79,8 @@ public class PjService {
 	 *            项目
 	 * @return 项目
 	 */
-	public Pj get(String pj) {
-		return pjDao.get(pj);
+	public Pj get(Integer pj) {
+		return pjDao.getById(pj);
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class PjService {
 	 *            项目
 	 */
 	@Transactional
-	public void delete(String pj) {
+	public void delete(Integer pj) {
 		pjAuthDao.deletePj(pj);
 		pjGrUsrDao.deletePj(pj);
 		pjGrDao.deletePj(pj);
@@ -114,7 +114,7 @@ public class PjService {
 
 		svnService.exportConfig(pj);
 
-		pjDao.delete(pj);
+		pjDao.deleteById(pj);
 	}
 
 	/**
@@ -160,14 +160,14 @@ public class PjService {
 			this.pjDao.insert(pj);
 			for (String gr : Constants.GROUPS) {
 				PjGr pjGr = new PjGr();
-				pjGr.setPj(pj.getPj());
+				pjGr.setPjId(pj.getId());
 				pjGr.setGr(gr);
 				pjGr.setDes(gr);
 				pjGrDao.save(pjGr);
 			}
 			// 增加默认的权限 @see Issue 29
 			PjAuth pjAuth = new PjAuth();
-			pjAuth.setPj(pj.getPj());
+			pjAuth.setPjId(pj.getId());
 			pjAuth.setRes(this.pjAuthService.formatRes(pj, "/"));
 			pjAuth.setRw("rw");
 			pjAuth.setGr(Constants.GROUP_MANAGER);
@@ -176,7 +176,7 @@ public class PjService {
 		} else {
 			this.pjDao.update(pj);
 		}
-		svnService.exportConfig(pj.getPj());
+		svnService.exportConfig(pj.getId());
 	}
 	
 	/**
@@ -185,7 +185,7 @@ public class PjService {
 	 * @return 项目的相对根路径
 	 * @since 3.0.3
 	 */
-	public String getRelateRootPath(String pj){
+	public Integer getRelateRootPath(Integer pj){
 		Pj p = this.get(pj);
 		if(p == null || StringUtils.isBlank(p.getPath())){
 			return pj;

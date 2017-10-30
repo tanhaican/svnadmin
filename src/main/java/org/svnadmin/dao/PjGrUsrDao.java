@@ -33,8 +33,8 @@ public class PjGrUsrDao extends Dao {
 	 *            用户
 	 * @return 组用户
 	 */
-	public PjGrUsr get(String pj, String gr, String usr) {
-		String sql = "select a.pj,a.usr,a.gr,b.name as usrname from pj_gr_usr a left join usr b on (a.usr=b.usr) where a.pj = ? and a.gr=? and a.usr=?";
+	public PjGrUsr get(int pjId, String gr, String usr) {
+		String sql = "select a.pj_id,a.usr,a.gr,b.name as usrname from pj_gr_usr a left join usr b on (a.usr=b.usr) where a.pj_id = ? and a.gr=? and a.usr=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -42,7 +42,7 @@ public class PjGrUsrDao extends Dao {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 			pstmt.setString(index++, gr);
 			pstmt.setString(index++, usr);
 
@@ -66,8 +66,8 @@ public class PjGrUsrDao extends Dao {
 	 *            组
 	 * @return 组用户列表
 	 */
-	public List<PjGrUsr> getList(String pj, String gr) {
-		String sql = "select a.pj,a.usr,a.gr,b.name as usrname from pj_gr_usr a left join usr b on (a.usr = b.usr) where a.pj=? and a.gr=? order by a.usr";
+	public List<PjGrUsr> getList(int pjId, String gr) {
+		String sql = "select a.pj_id,a.usr,a.gr,b.name as usrname from pj_gr_usr a left join usr b on (a.usr = b.usr) where a.pj_id=? and a.gr=? order by a.usr";
 		List<PjGrUsr> list = new ArrayList<PjGrUsr>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -76,7 +76,7 @@ public class PjGrUsrDao extends Dao {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 			pstmt.setString(index++, gr);
 
 			rs = pstmt.executeQuery();
@@ -99,10 +99,8 @@ public class PjGrUsrDao extends Dao {
 	 *            项目
 	 * @return 项目的组用户列表
 	 */
-	public List<PjGrUsr> getList(String pj) {
-		// String sql =
-		// "select pj,usr,gr from pj_gr_usr where pj=? order by gr,usr";
-		String sql = "select a.pj,a.gr,b.usr,c.name as usrname from pj_gr a left join pj_gr_usr b on (a.pj=b.pj and a.gr=b.gr) left join usr c on (b.usr = c.usr) where a.pj=? order by a.gr,b.usr";
+	public List<PjGrUsr> getList(int pjId) {
+		String sql = "select a.pj_id,a.gr,b.usr,c.name as usrname from pj_gr a left join pj_gr_usr b on (a.pj_id=b.pj_id and a.gr=b.gr) left join usr c on (b.usr = c.usr) where a.pj_id=? order by a.gr,b.usr";
 		List<PjGrUsr> list = new ArrayList<PjGrUsr>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -111,7 +109,7 @@ public class PjGrUsrDao extends Dao {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -134,10 +132,8 @@ public class PjGrUsrDao extends Dao {
 	 * @return 有相同的svn root的项目组用户
 	 */
 	public List<PjGrUsr> getListByRootPath(String rootPath) {
-		// String sql =
-		// "select pj,usr,gr from pj_gr_usr where pj in (select distinct pj from pj where type=? and path like ?) order by pj,gr,usr";
-		String sql = "select a.pj,a.gr,b.usr,c.name as usrname from pj_gr a left join pj_gr_usr b on (a.pj=b.pj and a.gr=b.gr) left join usr c on (b.usr=c.usr) "
-				+ " where a.pj in (select distinct pj from pj where type=? and path like ?) order by a.pj,a.gr,b.usr";
+		String sql = "select a.pj_id,a.gr,b.usr,c.name as usrname from pj_gr a left join pj_gr_usr b on (a.pj_id=b.pj_id and a.gr=b.gr) left join usr c on (b.usr=c.usr) "
+				+ " where a.pj_id in (select distinct id from pj where type=? and path like ?) order by a.pj_id,a.gr,b.usr";
 		List<PjGrUsr> list = new ArrayList<PjGrUsr>();
 
 		Connection conn = null;
@@ -172,7 +168,7 @@ public class PjGrUsrDao extends Dao {
 	 */
 	PjGrUsr readPjGrUsr(ResultSet rs) throws SQLException {
 		PjGrUsr result = new PjGrUsr();
-		result.setPj(rs.getString("pj"));
+		result.setPjId(rs.getInt("pj_id"));
 		result.setUsr(rs.getString("usr"));
 		result.setGr(rs.getString("gr"));
 		result.setUsrName(rs.getString("usrname"));
@@ -189,15 +185,15 @@ public class PjGrUsrDao extends Dao {
 	 * @param usr
 	 *            用户
 	 */
-	public void delete(String pj, String gr, String usr) {
-		String sql = "delete from pj_gr_usr where pj = ? and gr=? and usr=?";
+	public void delete(int pjId, String gr, String usr) {
+		String sql = "delete from pj_gr_usr where pj_id = ? and gr=? and usr=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 			pstmt.setString(index++, gr);
 			pstmt.setString(index++, usr);
 
@@ -243,15 +239,15 @@ public class PjGrUsrDao extends Dao {
 	 * @param gr
 	 *            组
 	 */
-	public void deletePjGr(String pj, String gr) {
-		String sql = "delete from pj_gr_usr where pj = ? and gr = ?";
+	public void deletePjGr(int pjId, String gr) {
+		String sql = "delete from pj_gr_usr where pj_id = ? and gr = ?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 			pstmt.setString(index++, gr);
 
 			pstmt.executeUpdate();
@@ -269,15 +265,15 @@ public class PjGrUsrDao extends Dao {
 	 * @param pj
 	 *            项目
 	 */
-	public void deletePj(String pj) {
-		String sql = "delete from pj_gr_usr where pj = ?";
+	public void deletePj(int pjId) {
+		String sql = "delete from pj_gr_usr where pj_id = ?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -295,15 +291,15 @@ public class PjGrUsrDao extends Dao {
 	 *            项目用户
 	 */
 	public void save(PjGrUsr pjGrUsr) {
-		if (this.get(pjGrUsr.getPj(), pjGrUsr.getGr(), pjGrUsr.getUsr()) == null) {
-			String sql = "insert into pj_gr_usr (pj,usr,gr) values (?,?,?)";
+		if (this.get(pjGrUsr.getPjId(), pjGrUsr.getGr(), pjGrUsr.getUsr()) == null) {
+			String sql = "insert into pj_gr_usr (pj_id,usr,gr) values (?,?,?)";
 			Connection conn = null;
 			PreparedStatement pstmt = null;
 			try {
 				conn = this.getConnection();
 				pstmt = conn.prepareStatement(sql);
 				int index = 1;
-				pstmt.setString(index++, pjGrUsr.getPj());
+				pstmt.setInt(index++, pjGrUsr.getPjId());
 				pstmt.setString(index++, pjGrUsr.getUsr());
 				pstmt.setString(index++, pjGrUsr.getGr());
 

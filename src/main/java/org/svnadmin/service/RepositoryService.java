@@ -70,8 +70,8 @@ public class RepositoryService{
 	 * @return svn仓库
 	 * @throws SVNException svn异常，例如没有权限等
 	 */
-	public SVNRepository getRepository(String pjId) throws SVNException{
-		Pj pj = pjDao.get(pjId);
+	public SVNRepository getRepository(Integer pjId) throws SVNException{
+		Pj pj = pjDao.getById(pjId);
 		if(pj == null){
 			LOG.warn("Not found project: "+pjId);
 			return null;
@@ -123,7 +123,7 @@ public class RepositoryService{
 		String svnPassword = usr.getPsw();
 		if(!Constants.HTTP_MUTIL.equals(pj.getType())){
 			//pj_usr覆盖用户的密码
-			PjUsr pjUsr = pjUsrDao.get(pj.getPj(), svnUserName);
+			PjUsr pjUsr = pjUsrDao.get(pj.getId(), svnUserName);
 			if(pjUsr != null){
 				svnPassword = pjUsr.getPsw();
 			}
@@ -170,7 +170,7 @@ public class RepositoryService{
 	 * @return 目录或文件系统
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Collection<SVNDirEntry> getDir(String pj,String path){
+	public Collection<SVNDirEntry> getDir(Integer pj, String path){
 		if(StringUtils.isBlank(path)){
 			path = "/";//root
 		}

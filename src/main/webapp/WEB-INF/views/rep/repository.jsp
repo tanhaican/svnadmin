@@ -23,7 +23,7 @@
                             <div class="ibox">
                                 <div class="ibox-content">
                                     <h3>项目资源树</h3>
-                                    <input type="hidden" id="now-pj" value="${pj.pj}"/>
+                                    <input type="hidden" id="now-pj" value="${pj.id}"/>
                                     <div class="filetree treeview" style="width: 100%;height:530px;overflow: auto;">
                                         <ul>
                                             <li id="svnroot" class="closed lastclosed" treeId="rep"

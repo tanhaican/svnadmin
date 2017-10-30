@@ -31,8 +31,8 @@ public class PjUsrDao extends Dao {
 	 *            用户
 	 * @return 项目用户
 	 */
-	public PjUsr get(String pj, String usr) {
-		String sql = "select a.pj,a.usr,a.psw,b.name as usrname from pj_usr a left join usr b on (a.usr = b.usr) where a.pj = ? and a.usr=?";
+	public PjUsr get(int pjId, String usr) {
+		String sql = "select a.pj_id,a.usr,a.psw,b.name as usrname from pj_usr a left join usr b on (a.usr = b.usr) where a.pj_id = ? and a.usr=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -40,7 +40,7 @@ public class PjUsrDao extends Dao {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 			pstmt.setString(index++, usr);
 
 			rs = pstmt.executeQuery();
@@ -61,8 +61,8 @@ public class PjUsrDao extends Dao {
 	 *            项目
 	 * @return 项目的用户列表
 	 */
-	public List<PjUsr> getList(String pj) {
-		String sql = "select a.pj,a.usr,a.psw,b.name usrname from pj_usr a left join usr b on (a.usr = b.usr) where a.pj = ?";
+	public List<PjUsr> getList(int pjId) {
+		String sql = "select a.pj_id,a.usr,a.psw,b.name usrname from pj_usr a left join usr b on (a.usr = b.usr) where a.pj_id = ?";
 		List<PjUsr> list = new ArrayList<PjUsr>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -71,7 +71,7 @@ public class PjUsrDao extends Dao {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -95,7 +95,7 @@ public class PjUsrDao extends Dao {
 	 */
 	PjUsr readPjUsr(ResultSet rs) throws SQLException {
 		PjUsr result = new PjUsr();
-		result.setPj(rs.getString("pj"));
+		result.setPjId(rs.getInt("pj_id"));
 		result.setUsr(rs.getString("usr"));
 		result.setName(rs.getString("usrname"));
 		result.setPsw(rs.getString("psw"));
@@ -110,15 +110,15 @@ public class PjUsrDao extends Dao {
 	 * @param usr
 	 *            用户
 	 */
-	public void delete(String pj, String usr) {
-		String sql = "delete from pj_usr where pj = ? and usr=?";
+	public void delete(int pjId, String usr) {
+		String sql = "delete from pj_usr where pj_id = ? and usr=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 			pstmt.setString(index++, usr);
 
 			pstmt.executeUpdate();
@@ -136,15 +136,15 @@ public class PjUsrDao extends Dao {
 	 * @param pj
 	 *            项目
 	 */
-	public void deletePj(String pj) {
-		String sql = "delete from pj_usr where pj = ?";
+	public void deletePj(int pjId) {
+		String sql = "delete from pj_usr where pj_id = ?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pj);
+			pstmt.setInt(index++, pjId);
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -188,14 +188,14 @@ public class PjUsrDao extends Dao {
 	 * @return 成功数量
 	 */
 	public int insert(PjUsr pjUsr) {
-		String sql = "insert into pj_usr (pj,usr,psw) values (?,?,?)";
+		String sql = "insert into pj_usr (pj_id,usr,psw) values (?,?,?)";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = this.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
-			pstmt.setString(index++, pjUsr.getPj());
+			pstmt.setInt(index++, pjUsr.getPjId());
 			pstmt.setString(index++, pjUsr.getUsr());
 			pstmt.setString(index++, pjUsr.getPsw());
 
@@ -217,7 +217,7 @@ public class PjUsrDao extends Dao {
 	 * @return 更新的数量
 	 */
 	public int update(PjUsr pjUsr) {
-		String sql = "update pj_usr set psw=? where pj = ? and usr=?";
+		String sql = "update pj_usr set psw=? where pj_id = ? and usr=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -225,7 +225,7 @@ public class PjUsrDao extends Dao {
 			pstmt = conn.prepareStatement(sql);
 			int index = 1;
 			pstmt.setString(index++, pjUsr.getPsw());
-			pstmt.setString(index++, pjUsr.getPj());
+			pstmt.setInt(index++, pjUsr.getPjId());
 			pstmt.setString(index++, pjUsr.getUsr());
 
 			return pstmt.executeUpdate();

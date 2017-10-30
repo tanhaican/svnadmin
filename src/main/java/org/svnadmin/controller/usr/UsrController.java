@@ -40,8 +40,6 @@ public class UsrController extends BaseController {
     @Autowired
     private UsrService usrService;
     @Autowired
-    private PjService pjService;
-    @Autowired
     private PjUsrService pjUsrService;
 
     /**
@@ -175,7 +173,7 @@ public class UsrController extends BaseController {
             for (Pj pj : pjList) {
                 PjUsr pjUsr = new PjUsr();
                 pjUsr.setUsr(usr.getUsr());
-                pjUsr.setPj(pj.getPj());
+                pjUsr.setPjId(pj.getId());
                 pjUsr.setPsw(EncryptUtil.encrypt(newPsw));
                 pjUsrService.save(pjUsr);
             }

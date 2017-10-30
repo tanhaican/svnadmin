@@ -47,7 +47,7 @@ public class ProjectUsrController extends BaseController {
      * @return
      */
     @RequestMapping(value = "pjUsrList", method = RequestMethod.GET)
-    public String pjUsrList(HttpSession session,@RequestParam("pj")String pj, ModelMap map) {
+    public String pjUsrList(HttpSession session,@RequestParam("pj")Integer pj, ModelMap map) {
         // 账户
         List<Usr> usrList = usrService.list(pj);
         map.put("pj", pjService.get(pj));
@@ -62,7 +62,7 @@ public class ProjectUsrController extends BaseController {
      */
     @RequestMapping(value = "pjUsrList", method = RequestMethod.GET, params = "action=data")
     @ResponseBody
-    public Object pjUsrList(HttpSession session,@RequestParam("pj")String pj) {
+    public Object pjUsrList(HttpSession session,@RequestParam("pj")Integer pj) {
         // 项目账户
         List<PjUsr> list = pjUsrService.list(pj);
         PageBean<PjUsr> pageBean = new PageBean<PjUsr>();

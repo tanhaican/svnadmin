@@ -51,37 +51,16 @@
                                                 <td>${v.index+1}</td>
                                                 <td>${item.pj}</td>
                                                 <td>${item.path}</td>
-                                                <td><a href="repository?pj=${item.pj}" title="去设置权限？">${item.url}</a></td>
+                                                <td><a href="repository?pj=${item.id}" title="去设置权限？">${item.url}</a></td>
                                                 <td><label class="label label-warning">${item.type}</label></td>
                                                 <td>${item.des}</td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <button class="btn btn-primary btn-sm" type="button" onclick="location.href='pjUsrList?pj=${item.pj}';"><i class="fa fa-user"></i> 用户</button>
-                                                        <button class="btn btn-success btn-sm" type="button" onclick="location.href='pjGrList?pj=${item.pj}';"><i class="fa fa-users"></i> 用户组</button>
-                                                        <button class="btn btn-warning btn-sm" type="button" onclick="location.href='repository?pj=${item.pj}';"><i class="fa fa-unlock-alt"></i> 权限</button>
-                                                        <button class="btn btn-danger btn-sm del-proj" type="button" data-pj="${item.pj}"><i class="fa fa-trash-o"></i> 删除</button>
+                                                        <button class="btn btn-primary btn-sm" type="button" onclick="location.href='pjUsrList?pj=${item.id}';"><i class="fa fa-user"></i> 用户</button>
+                                                        <button class="btn btn-success btn-sm" type="button" onclick="location.href='pjGrList?pj=${item.id}';"><i class="fa fa-users"></i> 用户组</button>
+                                                        <button class="btn btn-warning btn-sm" type="button" onclick="location.href='repository?pj=${item.id}';"><i class="fa fa-unlock-alt"></i> 权限</button>
+                                                        <button class="btn btn-danger btn-sm del-proj" type="button" data-pj="${item.id}"><i class="fa fa-trash-o"></i> 删除</button>
                                                     </div>
-                                                   <%-- <div class="btn-group">
-                                                        <button data-toggle="dropdown" class="btn btn-info btn-xs dropdown-toggle"
-                                                                aria-expanded="false">操作 <span class="caret"></span>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                        <li>
-                                                            <a href="javascript:void(0)" onclick="location.href='pjUsrList?pj=${item.pj}';" class="font-bold">设置用户</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:void(0)" onclick="location.href='pjGrList?pj=${item.pj}';" class="font-bold">设置用户组</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:void(0)" onclick="location.href='repository?pj=${item.pj}';" class="font-bold">设置权限</a>
-                                                        </li>
-                                                        <!-- <li class="divider"></li>
-                                                        <li>
-                                                            <a href="javascript:void(0)" data-id="{{item.id}}" class="font-bold text-danger">删除</a>
-                                                        </li>
-                                                        -->
-                                                    </ul>
-                                                    </div>--%>
                                                 </td>
                                             </tr>
                                         </c:forEach>

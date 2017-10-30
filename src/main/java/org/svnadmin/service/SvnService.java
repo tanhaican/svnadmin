@@ -88,8 +88,8 @@ public class SvnService {
 	 * @param pj
 	 *            项目id
 	 */
-	public synchronized void exportConfig(String pj) {
-		this.exportConfig(this.pjDao.get(pj));
+	public synchronized void exportConfig(int pjId) {
+		this.exportConfig(this.pjDao.getById(pjId));
 	}
 
 	/**
@@ -127,11 +127,11 @@ public class SvnService {
 	 */
 	private void exportSVN(Pj pj) {
 		// 项目的用户
-		List<Usr> usrList = this.usrDao.getList(pj.getPj());
+		List<Usr> usrList = this.usrDao.getList(pj.getId());
 		// 项目的用户组
-		Map<String, List<PjGrUsr>> pjGrUsrMap = this.getPjGrUsrs(pj.getPj());
+		Map<String, List<PjGrUsr>> pjGrUsrMap = this.getPjGrUsrs(pj.getId());
 		// 项目的权限
-		Map<String, List<PjAuth>> pjAuthMap = this.getPjAuths(pj.getPj());
+		Map<String, List<PjAuth>> pjAuthMap = this.getPjAuths(pj.getId());
 
 		this.exportSvnConf(pj);
 		this.exportPasswdSVN(pj, usrList);
@@ -146,11 +146,11 @@ public class SvnService {
 	 */
 	private void exportHTTP(Pj pj) {
 		// 项目的用户
-		List<Usr> usrList = this.usrDao.getList(pj.getPj());
+		List<Usr> usrList = this.usrDao.getList(pj.getId());
 		// 项目的用户组
-		Map<String, List<PjGrUsr>> pjGrUsrMap = this.getPjGrUsrs(pj.getPj());
+		Map<String, List<PjGrUsr>> pjGrUsrMap = this.getPjGrUsrs(pj.getId());
 		// 项目的权限
-		Map<String, List<PjAuth>> pjAuthMap = this.getPjAuths(pj.getPj());
+		Map<String, List<PjAuth>> pjAuthMap = this.getPjAuths(pj.getId());
 
 		this.exportSVNPathConf(pj);
 		this.exportPasswdHTTP(pj, usrList);
@@ -214,9 +214,9 @@ public class SvnService {
 	 *            项目
 	 * @return 项目的权限列表
 	 */
-	private Map<String, List<PjAuth>> getPjAuths(String pj) {
+	private Map<String, List<PjAuth>> getPjAuths(int pjId) {
 		Map<String, List<PjAuth>> results = new LinkedHashMap<String, List<PjAuth>>();// <res,List<PjAuth>>
-		List<PjAuth> pjAuthList = this.pjAuthDao.getList(pj);
+		List<PjAuth> pjAuthList = this.pjAuthDao.getList(pjId);
 		// 格式化返回数据
 		for (PjAuth pjAuth : pjAuthList) {
 			List<PjAuth> authList = results.get(pjAuth.getRes());
@@ -237,10 +237,10 @@ public class SvnService {
 	 *            项目
 	 * @return 项目的组列表
 	 */
-	private Map<String, List<PjGrUsr>> getPjGrUsrs(String pj) {
+	private Map<String, List<PjGrUsr>> getPjGrUsrs(int pjId) {
 		Map<String, List<PjGrUsr>> results = new LinkedHashMap<String, List<PjGrUsr>>();// <gr,List<PjGrUsr>>
 
-		List<PjGrUsr> pjGrUsrs = this.pjGrUsrDao.getList(pj);
+		List<PjGrUsr> pjGrUsrs = this.pjGrUsrDao.getList(pjId);
 
 		// 格式化返回数据
 		for (PjGrUsr pjGrUsr : pjGrUsrs) {
@@ -270,7 +270,7 @@ public class SvnService {
 
 		// 格式化返回数据
 		for (PjGrUsr pjGrUsr : pjGrUsrs) {
-			String key = pjGrUsr.getPj() + "_" + pjGrUsr.getGr();
+			String key = pjGrUsr.getPjId() + "_" + pjGrUsr.getGr();
 			List<PjGrUsr> grUsrList = results.get(key);// 项目ID_组ID see: Issue 4
 			if (grUsrList == null) {
 				grUsrList = new ArrayList<PjGrUsr>();
@@ -400,7 +400,7 @@ public class SvnService {
 				if (StringUtils.isNotBlank(pjAuth.getGr())) {
 					// 项目ID_组ID see: Issue 4
 					contents.append("@")
-							.append(pjAuth.getPj() + "_" + pjAuth.getGr())
+							.append(pjAuth.getPjId() + "_" + pjAuth.getGr())
 							.append("=").append(pjAuth.getRw()).append(SEP);
 				} else if (StringUtils.isNotBlank(pjAuth.getUsr())) {
 					contents.append(pjAuth.getUsr()).append("=")
