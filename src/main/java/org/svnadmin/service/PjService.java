@@ -142,12 +142,14 @@ public class PjService {
 		if (insert) {
 			// 数据库里已经存在相同的路径或url的项目
 			if (this.pjDao.getCount(pj.getPath(), pj.getUrl()) > 0) {
-				throw new RuntimeException(I18N.getLbl("pj.save.error.existPathOrUrl", "数据库里已经存在相同的路径或url的仓库项目，请检查路径或url"));
+				throw new RuntimeException(I18N.getLbl("pj.save.error.existPathOrUrl", 
+						"数据库里已经存在相同的路径或url的仓库项目，请检查路径或url"));
 			}
 		} else {
 			// 数据库里已经存在相同的路径或url的项目
 			if (this.pjDao.getCount(pj.getPath(), pj.getUrl()) > 1) {
-				throw new RuntimeException(I18N.getLbl("pj.save.error.existMutilPathOrUrl","数据库里已经存在多个相同的路径或url的仓库项目，请检查路径或url"));
+				throw new RuntimeException(I18N.getLbl("pj.save.error.existMutilPathOrUrl",
+						"数据库里已经存在多个相同的路径或url的仓库项目，请检查路径或url"));
 			}
 		}
 		// 创建仓库
@@ -157,10 +159,10 @@ public class PjService {
 		}
 		if (insert) {
 			// 增加默认的组
-			this.pjDao.insert(pj);
+			int pjId = this.pjDao.insert(pj);
 			for (String gr : Constants.GROUPS) {
 				PjGr pjGr = new PjGr();
-				pjGr.setPjId(pj.getId());
+				pjGr.setPjId(pjId);
 				pjGr.setGr(gr);
 				pjGr.setDes(gr);
 				pjGrDao.save(pjGr);

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import org.svnadmin.constant.Constants;
 import org.svnadmin.entity.Pj;
 
+import com.mysql.jdbc.Statement;
+
 /**
  * 项目DAO
  * 
@@ -214,16 +216,17 @@ public class PjDao extends Dao {
 	 * 
 	 * @param pj
 	 *            项目
-	 * @return 影响数量
+	 * @return 如果成功返回主键ID，失败则返回-1
 	 */
 	public int insert(Pj pj) {
 		String sql = "insert into pj (pj,path,url,des,type) values (?,?,?,?,?)";
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		int genKey = -1 ;
 		try {
 			conn = this.getConnection();
-			pstmt = conn.prepareStatement(sql);
+			pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			int index = 1;
 			pstmt.setString(index++, pj.getPj());
 			pstmt.setString(index++, pj.getPath());
@@ -231,13 +234,24 @@ public class PjDao extends Dao {
 			pstmt.setString(index++, pj.getDes());
 			pstmt.setString(index++, pj.getType());
 
-			return pstmt.executeUpdate();
+			int updateRow =  pstmt.executeUpdate();
+			if(updateRow > 0) {
+				/**
+                 * 获取刚刚插入进去的记录中关注的那几列的值 
+                 */
+                ResultSet rs = pstmt.getGeneratedKeys();
+                if(rs.next()) {
+                	genKey = rs.getInt(1);
+                	pj.setId(genKey);
+                }
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		} finally {
 			this.close(null, pstmt, conn);
 		}
+		return genKey;
 	}
 
 	/**

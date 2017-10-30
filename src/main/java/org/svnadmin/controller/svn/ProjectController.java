@@ -66,8 +66,14 @@ public class ProjectController extends BaseController {
     @ResponseBody
     public Object pjListDataSet(HttpSession session,@RequestParam("pageNumber")int pageNumber) {
         PageBean<Usr> pageBean = new PageBean<Usr>(pageNumber,10);
-//        usrService.queryForPageBean(pageBean);
         return pageBean;
+    }
+    
+    @RequestMapping(value = "getPj", method = RequestMethod.GET)
+    @ResponseBody
+    public Pj getPj(HttpSession session, @RequestParam("pjId")int pjId) {
+    	Pj pj = pjService.get(pjId);
+        return pj;
     }
 
     /**

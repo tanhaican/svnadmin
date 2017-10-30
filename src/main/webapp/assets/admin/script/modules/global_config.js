@@ -21,6 +21,7 @@ global.config = {
       'template_ext': 'libs/template/template_ext.js', //模板扩展Tag
       'my97date': 'libs/My97DatePicker/WdatePicker.js', //时间选择控件
       'toastr': '{framePath}/plugins/toastr/toastr.min.js', //时间选择控件
+      'switch': '{framePath}/plugins/switch/bootstrapSwitch.js', //开关控件
       'constant': 'constant/constant.js' //系统公用常量
     },
     // 文件编码

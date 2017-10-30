@@ -21,7 +21,7 @@
                             <h5>SVN 项目列表</h5>
                         </div>
                         <div class="ibox-content">
-                            <c:if test="${'admin' == adminUser.role}">
+                            <c:if test="${'admin' == adminUser.role || 'sadmin' == adminUser.role}">
                             <div class="row">
                                 <div class="qry-form">
                                     <button type="button" class="btn btn-primary btn-sm margin-bottom-empty" onclick="location='pjCreate';" id="qryBtn">+ 创建项目</button>

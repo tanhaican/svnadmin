@@ -81,7 +81,7 @@ public class ProjectUsrController extends BaseController {
     @ResponseBody
     public Object pjUsrAddHandler(HttpServletRequest request,PjUsr entity) {
         Map<String, String> params = HttpUtils.getParams(request);
-        if ("1".equals(params.get("defaultPswd"))) {
+        if ("on".equals(params.get("defaultPswd"))) {
             entity.setPsw(usrService.get(entity.getUsr()).getPsw());
         } else {
             entity.setPsw(EncryptUtil.encrypt(entity.getPsw()));
@@ -98,14 +98,8 @@ public class ProjectUsrController extends BaseController {
     @AdminAuthPassport
     @RequestMapping(value = "pjUsrRemoveHandler", method = RequestMethod.POST)
     @ResponseBody
-    public Object pjUsrRemoveHandler(HttpServletRequest request,PjUsr entity) {
-        Map<String, String> params = HttpUtils.getParams(request);
-        if ("1".equals(params.get("defaultPswd"))) {
-            entity.setPsw(usrService.get(entity.getUsr()).getPsw());
-        } else {
-            entity.setPsw(EncryptUtil.encrypt(entity.getPsw()));
-        }
-        pjUsrService.save(entity);
+    public Object pjUsrRemoveHandler(HttpServletRequest request, PjUsr entity) {
+        pjUsrService.delete(entity.getPjId(), entity.getUsr());
         return pushMsg("添加项目用户成功", true);
     }
 }

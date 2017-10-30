@@ -11,6 +11,7 @@ define(function(require, exports, module){
 	var template = require('template');
 	var constant = require('constant');
 	var pageService = require('page_service');
+	require('switch');
 
 	var pj = $('.select_pj').val();
 	var newPsw = $('#psw');
@@ -27,23 +28,40 @@ define(function(require, exports, module){
 	var _scope = {
 		view:{
 			init:function(){
+				$.get('getPj?pjId=' + pj, function(data) {
+					if(data) {
+						$('#pjName').html(data.pj);
+					}
+				});
+				
 				$('#addBtn').on('click', function(){
 					_scope.view.editDialog();
 				});
-				$('#defaultPswd').on('click', function(){
+				/*$('#defaultPswd').on('click', function(){
 					var checked = $(this).get(0).checked;
 					if(checked){
 						newPsw.removeAttr('required');
 					}else{
 						newPsw.attr('required','');
 					}
+				});*/
+				
+				$('#useDefultPwd').on('switch-change', function (e, data) {
+				    var value = data.value;
+				    if(value) {
+				    	$('#inputPwd').hide();
+				    	newPsw.removeAttr('required');
+				    } else {
+				    	$('#inputPwd').show();
+				    	newPsw.attr('required','');
+				    }
 				});
 			},
 			reBindEvent:function(){
 				$('.btn-remove').on('click', function(){
 					var pj = $(this).attr('data-pj');
 					var usr = $(this).attr('data-usr');
-					_scope.methods.removePjUser(pj,usr);
+					_scope.methods.removePjUser(pj, usr);
 				});
 			},
 			editDialog:function(){
@@ -70,12 +88,12 @@ define(function(require, exports, module){
 				});
 				return false;
 			},
-			removePjUser:function(pj,usr){
+			removePjUser:function(pj, usr){
 				util.confirm({
-					msg: '您确定在项目 “'+pj+'” 中删除用户 “'+usr+'” 吗?',
+					msg: '您确定在项目 “' + $('#pjName').html() + '” 中删除用户 “'+usr+'” 吗?',
 					confirm:function(){
 						// 请求
-						$.post('pjUsrRemoveHandler', {'pj': pj,'usr' : usr}, function(data){
+						$.post('pjUsrRemoveHandler', {'pjId': pj,'usr' : usr}, function(data){
 							if(data.status){
 								pageBean.reload();
 								util.showMsg(data.info);

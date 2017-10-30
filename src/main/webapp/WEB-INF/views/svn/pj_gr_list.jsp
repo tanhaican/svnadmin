@@ -21,6 +21,9 @@
                             <h5>项目用户组列表</h5>
                         </div>
                         <div class="ibox-content">
+                        	<div class="row">
+                        		<h1>项目：<span id="pjName"></span></h1>
+                        	</div>
                             <div class="row">
                                 <div class="qry-form">
                                     <input type="hidden" value="${pj.id}" class="select_pj"/>
@@ -32,7 +35,6 @@
                                     <thead>
                                     <tr>
                                         <th>序号</th>
-                                        <th>项目</th>
                                         <th>用户组</th>
                                         <th>描述</th>
                                         <th>设置用户</th>
@@ -48,11 +50,10 @@
                                         {{each dataList as item i}}
                                         <tr>
                                             <td>{{i+1}}</td>
-                                            <td>{{item.pj}}</td>
                                             <td>{{item.gr}}</td>
                                             <td>{{item.des}}</td>
-                                            <td><button type="button" class="btn btn-primary btn-xs btn-set-usr" onclick="location='pjGrUsrList?pj={{item.pj}}&gr={{item.gr}}';">设置用户</button></td>
-                                            <td><button type="button" class="btn btn-warning btn-xs btn-remove" data-pj="{{item.pj}}" data-gr="{{item.gr}}">删除</button></td>
+                                            <td><button type="button" class="btn btn-primary btn-xs btn-set-usr" onclick="location='pjGrUsrList?pj={{item.pjId}}&gr={{item.gr}}';">设置用户</button></td>
+                                            <td><button type="button" class="btn btn-warning btn-xs btn-remove" data-pj="{{item.pjId}}" data-gr="{{item.gr}}">删除</button></td>
                                         </tr>
                                         {{/each}}
                                         {{/if}}
@@ -74,7 +75,7 @@
             <label class="col-sm-3 control-label">所属项目：</label>
             <div class="col-sm-8">
                 <p class="form-control-static">${pj.pj}（${pj.des}）</p>
-                <input type="hidden" name="pj" value="${pj.pj}" />
+                <input type="hidden" name="pjId" value="${pj.id}" />
             </div>
         </div>
         <div class="form-group">

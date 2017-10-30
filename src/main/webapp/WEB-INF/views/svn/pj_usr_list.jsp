@@ -22,6 +22,9 @@
                         </div>
                         <div class="ibox-content">
                             <div class="row">
+                        		<h1>项目：<span id="pjName"></span></h1>
+                        	</div>
+                        	<div class="row">
                                 <div class="qry-form">
                                     <input type="hidden" value="${pj.id}" class="select_pj"/>
                                     <button type="button" class="btn btn-primary btn-sm margin-bottom-empty" id="addBtn">+ 添加项目用户</button>
@@ -32,7 +35,6 @@
                                     <thead>
                                     <tr>
                                         <th>序号</th>
-                                        <th>项目</th>
                                         <th>帐号</th>
                                         <th>姓名</th>
                                         <th>项目密码</th>
@@ -48,11 +50,10 @@
                                         {{each dataList as item i}}
                                         <tr>
                                             <td>{{i+1}}</td>
-                                            <td>{{item.pj}}</td>
                                             <td>{{item.usr}}</td>
                                             <td>{{item.name}}</td>
                                             <td>{{item.psw}}</td>
-                                            <td><button type="button" class="btn btn-warning btn-xs btn-remove" data-pj="{{item.pj}}" data-usr="{{item.usr}}">删除</button></td>
+                                            <td><button type="button" class="btn btn-warning btn-xs btn-remove" data-pj="{{item.pjId}}" data-usr="{{item.usr}}">删除</button></td>
                                         </tr>
                                         {{/each}}
                                         {{/if}}
@@ -75,6 +76,7 @@
             <div class="col-sm-8">
                 <p class="form-control-static">${pj.pj}（${pj.des}）</p>
                 <input type="hidden" name="pj" value="${pj.pj}" />
+                <input type="hidden" name="pjId" value="${pj.id}" />
             </div>
         </div>
         <div class="form-group">
@@ -87,18 +89,26 @@
                 </select>
             </div>
         </div>
+        
         <div class="form-group">
+            <label class="col-sm-3 control-label">使用默认密码：</label>
+            
+            <div class="col-sm-8">
+	            <div class="switch" id="useDefultPwd" tabindex="0" data-on-label="是" data-off-label="否">
+	                <input name="defaultPswd" id="defaultPswd" type="checkbox" />
+	            </div>
+            </div>
+		    
+            <!-- <div class="col-sm-8">
+                <label class="checkbox-inline">
+                    <input type="checkbox" value="1" style="margin-top: 2px;" name="defaultPswd" id="defaultPswd">使用默认密码</label>
+            </div> -->
+        </div>
+        <div class="form-group" id="inputPwd">
             <label class="col-sm-3 control-label">密码：</label>
             <div class="col-sm-8">
                 <input type="text" name="psw" id="psw" class="form-control" placeholder="请输入密码" required/>
                 <span class="help-block m-b-none">可选择复选框设置默认用户密码</span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-3 control-label">默认密码：</label>
-            <div class="col-sm-8">
-                <label class="checkbox-inline">
-                    <input type="checkbox" value="1" style="margin-top: 2px;" name="defaultPswd" id="defaultPswd">使用默认密码</label>
             </div>
         </div>
         <div class="form-group">
@@ -115,18 +125,3 @@
 </script>
 </body>
 </html>
-<%--<c:if test="${pageBean.recordCount<1}">--%>
-    <%--<tr><td colspan="15" align="center">未查询到相关数据</td></tr>--%>
-<%--</c:if>--%>
-<%--<c:if test="${pageBean.recordCount>0}">--%>
-    <%--<c:forEach items="${pageBean.dataList}" var="item" varStatus="v">--%>
-        <%--<tr>--%>
-            <%--<td>${v.index+1}</td>--%>
-            <%--<td>${item.pj}</td>--%>
-            <%--<td>${item.path}</td>--%>
-            <%--<td>${item.url}</td>--%>
-            <%--<td><label class="label label-warning">${item.type}</label></td>--%>
-            <%--<td>${item.des}</td>--%>
-        <%--</tr>--%>
-    <%--</c:forEach>--%>
-<%--</c:if>--%>

@@ -394,7 +394,7 @@ public class PjAuthDao extends Dao {
 	 *            组
 	 */
 	public void deletePjGr(int pjId, String gr) {
-		String sql = "delete from pj_gr_auth where pj = ? and gr=?";
+		String sql = "delete from pj_gr_auth where pj_id = ? and gr=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {

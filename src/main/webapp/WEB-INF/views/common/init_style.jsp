@@ -10,3 +10,4 @@
     <link rel="stylesheet" href="${appPath}/script/modules/libs/layer/skin/layer.css" />
     <link rel="stylesheet" href="${framePath}/css/plugins/toastr/toastr.min.css">
     <link rel="stylesheet" type="text/css" href="${appPath}/style/admin_style.css" />
+    <link rel="stylesheet" href="${framePath}/css/plugins/switch/bootstrapSwitch.css">

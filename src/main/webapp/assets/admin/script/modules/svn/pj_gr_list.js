@@ -31,11 +31,18 @@ define(function(require, exports, module){
 					$('#submitForm')[0].reset();
 					_scope.view.editDialog();
 				});
+				
+				$.get('getPj?pjId=' + pj, function(data) {
+					if(data) {
+						$('#pjName').html(data.pj);
+					}
+				});
 			},
 			reBindEvent:function(){
 				$('.btn-remove').on('click', function(){
-					var pj = $(this).attr('data-pj');
-					var gr = $(this).attr('data-gr');
+					var $obj = $(this)
+					var pj = $obj.attr('data-pj');
+					var gr = $obj.attr('data-gr');
 					_scope.methods.removePjGr(pj,gr);
 				});
 			},
@@ -54,7 +61,7 @@ define(function(require, exports, module){
 			submitForm:function(){
 				var form = util.serializeObject($('#submitForm'));
 				var load_index = util.loading();
-				$.post('pjGrAddHandler',form,function(data){
+				$.post('pjGrAddHandler',form, function(data){
 					util.showMsg(data.info);
 					if(data.status){
 						layer.closeAll();
@@ -63,12 +70,12 @@ define(function(require, exports, module){
 				});
 				return false;
 			},
-			removePjGr:function(pj,gr){
+			removePjGr: function(pj, gr){
 				util.confirm({
-					msg: '您确定在项目 “'+pj+'” 中删除用户组 “'+gr+'” 吗?',
+					msg: '您确定在项目 “' + $('#pjName').html() + '” 中删除用户组 “' + gr + '” 吗?',
 					confirm:function(){
 						// 请求
-						$.post('pjGrRemoveHandler', {'pj': pj,'gr' : gr}, function(data){
+						$.post('pjGrRemoveHandler', {'pjId': pj,'gr' : gr}, function(data){
 							if(data.status){
 								pageBean.reload();
 								util.showMsg(data.info);
