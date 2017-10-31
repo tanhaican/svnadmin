@@ -54,21 +54,20 @@ String roleName = (String) session.getAttribute(SessionConstant.USER_ROLE_SESSIO
                                         {{else}}
                                         {{each dataList as item i}}
                                         <tr>
-                                            <td>{{i+1}}</td>
+                                            <td>{{i+1}}#</td>
                                             <td>{{item.usr}}</td>
                                             <td>{{item.name}}</td>
                                             <td>{{item.psw}}</td>
                                             <td>{{item.role}}</td>
                                             <td><button type="button" class="btn btn-primary btn-xs btn-watch" data-id="{{item.usr}}">查看权限</button></td>
 											<td>
-                                            <c:if test="${roleName == 'sadmin'}">
+											<%if("sadmin".equals(roleName)){ %>
                                             	<button type="button" class="btn btn-warning btn-xs btn-remove" data-id="{{item.usr}}">删除</button>
-                                            </c:if>
-                                            <c:if test="${roleName != 'sadmin'}">
-												{{if item.createdBy == '${userName}'}}
+                                            <%} else { %>
+												{{if item.createdBy == '<%=userName %>' }}
 												<button type="button" class="btn btn-warning btn-xs btn-remove" data-id="{{item.usr}}">删除</button>
-												{{/if}}
-                                            </c:if>
+												{{/if }}
+                                            <%} %>
 											</td>
                                         </tr>
                                         {{/each}}

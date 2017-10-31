@@ -149,3 +149,7 @@ input.error, input.error:focus {
 #tplContainer div.btn-group {
 	width: 245px;
 }
+
+table th {
+    text-align: center;
+}
