@@ -17,6 +17,7 @@ import org.svnadmin.common.annotation.AdminAuthPassport;
 import org.svnadmin.common.entity.PageBean;
 import org.svnadmin.common.util.HttpUtils;
 import org.svnadmin.common.web.BaseController;
+import org.svnadmin.constant.Constants;
 import org.svnadmin.entity.Pj;
 import org.svnadmin.entity.PjAuth;
 import org.svnadmin.entity.PjUsr;
@@ -77,6 +78,12 @@ public class UsrController extends BaseController {
     public Object usrCreateHandler(HttpSession session, Usr entity) {
         try {
         	Usr loginUsr = SessionUtils.getLogedUser(session);
+        	String loginUsrRole = loginUsr.getRole();
+        	String role = entity.getRole();
+        	if(!Constants.USR_ROLE_SUPER_ADMIN.equals(loginUsrRole) &&
+        			Constants.USR_ROLE_SUPER_ADMIN.equals(role)) {
+        		role = Constants.USR_ROLE_ADMIN;
+        	}
             entity.setPsw(EncryptUtil.encrypt(entity.getPsw()));
             entity.setCreatedBy(loginUsr.getUsr());
             usrService.save(entity);

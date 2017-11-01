@@ -15,6 +15,16 @@ define(function(require, exports, module){
 	var pageBean = pageService.init({
 		url: 'usrList?action=data',
 		isPagination: false,
+		intercept: function(data) {
+			if(data) {
+				data.USER_ROLE = {
+					'sadmin': '超级管理员',
+					'admin': '普通管理员',
+					'': '普通用户'
+				}
+			}
+			return data
+		},
 		after:function(data){
 			_scope.view.reBindEvent();
 		}
@@ -54,7 +64,7 @@ define(function(require, exports, module){
 			submitForm:function(){
 				var form = util.serializeObject($('#submitForm'));
 				var load_index = util.loading();
-				$.post('usrCreateHandler',form,function(data){
+				$.post('usrCreateHandler', form, function(data){
 					util.showMsg(data.info);
 					if(data.status){
 						layer.closeAll();

@@ -54,11 +54,11 @@ String roleName = (String) session.getAttribute(SessionConstant.USER_ROLE_SESSIO
                                         {{else}}
                                         {{each dataList as item i}}
                                         <tr>
-                                            <td>{{i+1}}#</td>
+                                            <td>{{i+1}}</td>
                                             <td>{{item.usr}}</td>
                                             <td>{{item.name}}</td>
                                             <td>{{item.psw}}</td>
-                                            <td>{{item.role}}</td>
+                                            <td>{{USER_ROLE[item.role]}}</td>
                                             <td><button type="button" class="btn btn-primary btn-xs btn-watch" data-id="{{item.usr}}">查看权限</button></td>
 											<td>
 											<%if("sadmin".equals(roleName)){ %>
@@ -112,7 +112,9 @@ String roleName = (String) session.getAttribute(SessionConstant.USER_ROLE_SESSIO
             <div class="col-sm-8">
                 <select name="role" class="form-control">
                     <option value="">选择角色</option>
+                    <c:if test="${'sadmin' == adminUser.role}">
                     <option value="sadmin">超级管理员</option>
+                    </c:if>
                     <option value="admin">普通管理员</option>
                     <option value="">普通用户</option>
                 </select>
